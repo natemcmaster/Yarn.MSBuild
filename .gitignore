@@ -1,0 +1,11 @@
+Thumbs.db
+.DS_Store
+.dotnet/
+obj/
+bin/
+dist/
+artifacts/
+node_modules/
+yarn.lock
+.yarnclean
+*.log

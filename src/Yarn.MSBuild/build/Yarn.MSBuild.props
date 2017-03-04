@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <!-- set to 'false' in your csproj to prevent yarn from running on 'Build' and 'Clean' -->
+    <SuppressAutoYarn>false</SuppressAutoYarn>
+    <!-- set in your project to override location of yarn file-->
+    <YarnDir>$(MSBuildProjectDirectory)</YarnDir>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">..\tools\netstandard1.3\Yarn.MSBuild.dll</_YarnTaskAssembly>
+    <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">..\tools\net46\Yarn.MSBuild.dll</_YarnTaskAssembly>
+    <_YarnExecutable>$(MSBuildThisFileDirectory)..\dist\bin\yarn</_YarnExecutable>
+    <_YarnExecutable Condition="'$(OS)' == 'Windows_NT'">$(_YarnExecutable).cmd</_YarnExecutable>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(_YarnTaskAssembly)" TaskName="Yarn.MSBuild.Yarn" />
+</Project>

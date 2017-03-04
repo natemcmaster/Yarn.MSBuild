@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <YarnVersion>0.21.3</YarnVersion>
+    <VersionPrefix>$(YarnVersion)</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
+  </PropertyGroup>
+</Project>
