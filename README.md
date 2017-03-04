@@ -3,6 +3,8 @@ Yarn.MSBuild
 
 An MSBuild task for running the Yarn package manager.
 
+See [Yarn's Official Website](https://yarnpkg.com/en/) for more information about using Yarn.
+
 # Installation
 
 ```
@@ -80,3 +82,7 @@ string WorkingDirectory    The directory in which to execute the yarn command
   </Target>
 </Project>
 ```
+
+# About
+
+This is not an official Yarn project. See [LICENSE.txt](LICENSE.txt) and the [Third Party Notice](src/Yarn.MSBuild/third_party_notice.txt) for more details.
