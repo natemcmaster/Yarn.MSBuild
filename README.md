@@ -69,7 +69,7 @@ string WorkingDirectory    The directory in which to execute the yarn command
 
 ```xml
 <Project>
-  <Target Name="Build">
+  <Target Name="RunYarnCommands">
     <!-- defaults to "install" in the current directory using the bundled version of yarn. -->
     <Yarn /> 
 

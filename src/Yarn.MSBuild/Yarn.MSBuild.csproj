@@ -9,6 +9,7 @@ Automatically installs Node modules into web projects. This uses yarn, an altern
 
 This package also provides an MSBuild task for invoking Yarn commands.
     </Description>
+    <Copyright>Copyright Nate McMaster</Copyright>
     <Authors>Nate McMaster</Authors>
     <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
