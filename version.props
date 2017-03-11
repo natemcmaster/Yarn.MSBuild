@@ -2,6 +2,7 @@
   <PropertyGroup>
     <YarnVersion>0.21.3</YarnVersion>
     <VersionPrefix>$(YarnVersion)</VersionPrefix>
-    <VersionSuffix>alpha</VersionSuffix>
+    <VersionSuffix>beta</VersionSuffix>
+    <VersionSuffix Condition="'$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
   </PropertyGroup>
 </Project>

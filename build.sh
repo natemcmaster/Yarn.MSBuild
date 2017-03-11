@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
 set -e -o pipefail
+source ./scripts/common.sh
 
+if [[ "$TRAVIS_BUILD_NUMBER" != "" && "$TRAVIS_BRANCH" != "master" ]]; then
+    build_number=$(printf "%04d" $TRAVIS_BUILD_NUMBER)
+    echo "BuildNumber=$build_number"
+    export BuildNumber=$build_number
+fi
 config='Release'
 
 netfxversion='4.6.0'
@@ -12,14 +18,13 @@ if [ ! -e 'obj/refs.zip' ]; then
     unzip -q -d obj/refs/ obj/refs.zip
 fi
 
-source ./scripts/install-tools.sh
 dotnet_home="$(pwd)/.dotnet"
-export PATH="$dotnet_home:$PATH"
-install_dotnet $dotnet_home 1.0.1
-
 artifacts="$(pwd)/artifacts"
+
 rm -r "$artifacts" 2>/dev/null && :
-dotnet restore
-dotnet msbuild /nologo src/Yarn.MSBuild/ /t:GetYarn
-dotnet pack -c $config -o "$artifacts"
-dotnet test -c $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
+ensure_dotnet $dotnet_home 1.0.1
+echo "dotnet = $(dotnet --version)"
+__exec dotnet restore
+__exec dotnet msbuild /nologo src/Yarn.MSBuild/ /t:GetYarn
+__exec dotnet pack -c $config -o "$artifacts"
+__exec dotnet test -c $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
