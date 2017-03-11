@@ -11,7 +11,7 @@ This package also provides an MSBuild task for invoking Yarn commands.
     </Description>
     <Copyright>Copyright Nate McMaster</Copyright>
     <Authors>Nate McMaster</Authors>
-    <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6;net46</TargetFrameworks>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -25,7 +25,7 @@ This package also provides an MSBuild task for invoking Yarn commands.
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.3.0" PrivateAssets="All"/>
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-*" PrivateAssets="All"/>
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.0-*" PrivateAssets="All"/>
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-*" PrivateAssets="All"/>
@@ -46,7 +46,8 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <RemoveDir Directories="dist/" />
     <Delete Files="$(_TmpTgz)" Condition="Exists('$(_TmpTgz)')" />
     <Exec Command="wget -O $(_TmpTgz) https://github.com/yarnpkg/yarn/releases/download/v$(YarnVersion)/yarn-v$(YarnVersion).tar.gz" />
-    <Exec Command="tar zvxf $(_TmpTgz)" />
+    <Message Importance="High" Text="Extracting $(_TmpTgz)" />
+    <Exec Command="tar zxf $(_TmpTgz)" />
   </Target>
 
 </Project>

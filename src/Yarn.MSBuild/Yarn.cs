@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using MSBuildTask = Microsoft.Build.Utilities.Task;
@@ -40,8 +42,17 @@ namespace Yarn.MSBuild
                 ? " " + Command
                 : null;
             Log.LogMessage(MessageImportance.High, "Executing 'yarn{0}'", displayArgs);
-            
-            process.Start();
+
+            try
+            {
+                process.Start();
+            }
+            catch (Win32Exception)
+            {
+                Log.LogError($"Failed to start yarn from '{exe}'. You can override this by setting the {nameof(ExecutablePath)} property on the Yarn task.");
+                return false;
+            }
+
             process.WaitForExit();
             return process.ExitCode == 0;
         }
@@ -67,7 +78,12 @@ namespace Yarn.MSBuild
             string exe;
             if (string.IsNullOrEmpty(ExecutablePath))
             {
-                exe = YarnExeName;
+                exe = FindBundledYarn();
+                if (!File.Exists(exe))
+                {
+                    Log.LogMessage("Failed to find the version of yarn bundled in this package. [{0}]", exe);
+                    exe = YarnExeName;
+                }
             }
             else if (!File.Exists(ExecutablePath))
             {
@@ -93,6 +109,16 @@ namespace Yarn.MSBuild
             }
 
             return (exe, args);
+        }
+
+        private string FindBundledYarn()
+        {
+            var assembly = typeof(Yarn).GetTypeInfo().Assembly.Location;
+            var nugetRoot = new FileInfo(assembly) // Yarn.MSBuild.dll
+                .Directory // tfm
+                .Parent // tools
+                .Parent.FullName; // nuget package
+            return Path.Combine(nugetRoot, "dist/bin/yarn");
         }
 
         private static bool IsWindows()
