@@ -13,4 +13,4 @@ deploy:
   provider: script
   script: scripts/push-packages.sh
   on:
-    branch: master
+    tags: true

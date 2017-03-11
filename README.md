@@ -1,6 +1,10 @@
 Yarn.MSBuild
 ============
 
+[![Travis](https://img.shields.io/travis/natemcmaster/Yarn.MSBuild.svg?style=flat&label=travis)](https://travis-ci.org/natemcmaster/Yarn.MSBuild)
+[![NuGet](https://img.shields.io/nuget/v/Yarn.MSBuild.svg?style=flat)](https://nuget.org/packages/Yarn.MSBuild)
+
+
 An MSBuild task for running the Yarn package manager.
 
 See [Yarn's Official Website](https://yarnpkg.com/en/) for more information about using Yarn.
