@@ -13,6 +13,8 @@ branches:
     - appveyor
 artifacts:
   - path: 'artifacts\*.nupkg'
+cache:
+  - tools -> build.ps1
 deploy:
   - provider: NuGet
     skip_symbols: true

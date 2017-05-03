@@ -7,7 +7,9 @@ Automatically installs Node modules into web projects. This uses yarn, an altern
 
 This package also provides an MSBuild task for invoking Yarn commands.
     </Description>
-    <VersionSuffix Condition="'$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
+    <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' != 'master'">alpha</VersionSuffix>
+    <BuildNumber Condition="'$(APPVEYOR_BUILD_NUMBER)' != ''">$([System.Int32]::Parse('$(APPVEYOR_BUILD_NUMBER)').ToString('D5'))</BuildNumber>
+    <VersionSuffix Condition="'$(VersionSuffix)' != '' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
     <Copyright>Copyright Nate McMaster</Copyright>
     <Authors>Nate McMaster</Authors>
     <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
@@ -37,5 +39,11 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <Content Include="dist\**\*" PackagePath="%(Identity)" />
     <Content Include="third_party_notice.txt" PackagePath="/" />
   </ItemGroup>
+
+  <Target Name="UpdateBuildDetails" AfterTargets="Build" Condition="'$(APPVEYOR)' == 'true'">
+    <Exec Command="appveyor UpdateBuild -Version $(Version)"
+          IgnoreExitCode="true"
+          IgnoreStandardErrorWarningFormat="true" />
+  </Target>
 
 </Project>
