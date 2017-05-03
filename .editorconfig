@@ -11,3 +11,6 @@ indent_size = 4
 
 [*.json]
 indent_size = 2
+
+[*.{ps1, sh}]
+indent_size =  4

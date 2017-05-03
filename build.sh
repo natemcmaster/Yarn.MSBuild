@@ -65,5 +65,5 @@ __exec tar -zx -C $proj_dir -f $tmp_dir/yarn.tar.gz
 rm $tmp_dir/yarn.tar.gz
 
 __exec dotnet restore /p:VersionPrefix=$yarn_version
-__exec dotnet pack -c $config -o "$artifacts" /p:VersionPrefix=$yarn_version
-__exec dotnet test -c $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
+__exec dotnet pack --configuration $config --output "$artifacts" /p:VersionPrefix=$yarn_version
+__exec dotnet test --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj

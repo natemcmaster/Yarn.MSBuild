@@ -3,15 +3,12 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.1;net46</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp1.1;netcoreapp1.0</TargetFrameworks>
+    <AspNetCoreVersion>1.1.1</AspNetCoreVersion>
+    <AspNetCoreVersion Condition="'$(TargetFramework)' == 'netcoreapp1.0'">1.0.4</AspNetCoreVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.0.4" Condition="'$(TargetFramework)' == 'netcoreapp1.0'" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="$(AspNetCoreVersion)"/>
     <PackageReference Include="Yarn.MSBuild" Version="$(YarnVersion)" />
   </ItemGroup>
 
