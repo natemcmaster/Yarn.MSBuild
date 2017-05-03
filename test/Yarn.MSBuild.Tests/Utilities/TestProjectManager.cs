@@ -23,23 +23,32 @@ namespace Yarn.MSBuild.Tests.Utilities
         private Dictionary<string, string> _envVariables
             = new Dictionary<string, string>();
 
+#if NETCOREAPP1_1
+        private static readonly string s_baseDir = AppContext.BaseDirectory;
+#elif NET461
+        private static readonly string s_baseDir = AppDomain.CurrentDomain.BaseDirectory;
+#else
+#error Target frameworks need to be updated
+#endif
+
         public TestProjectManager()
         {
-            var project = new DirectoryInfo(AppContext.BaseDirectory) // netcoreapp1.1
+            var tfm = Path.GetFileName(s_baseDir);
+            var project = new DirectoryInfo(s_baseDir) // tfm
                 .Parent // Debug
                 .Parent // bin
                 .Parent; // proj dir
 
             _baseDir = Path.Combine(project.Parent.FullName, "testapps");
-            _workDir = Path.Combine(project.FullName, "obj", "testapps");
+            _workDir = Path.Combine(project.FullName, "obj", "testapps", tfm);
             Directory.CreateDirectory(_workDir);
             File.Copy(
-                Path.Combine(_baseDir, "NuGet.config"), 
+                Path.Combine(_baseDir, "NuGet.config"),
                 Path.Combine(_workDir, "NuGet.config"),
                 overwrite: true);
 
             var artifacts = Path.Combine(project.Parent.Parent.FullName, "artifacts");
-            var home = Environment.GetEnvironmentVariable("USERPROFILE") 
+            var home = Environment.GetEnvironmentVariable("USERPROFILE")
                 ?? Environment.GetEnvironmentVariable("HOME")
                 ?? Environment.GetEnvironmentVariable("HOMEDRIVE");
 
@@ -60,7 +69,7 @@ namespace Yarn.MSBuild.Tests.Utilities
                 .Where(f => f.StartsWith(packageId))
                 .Select(f => NuGetVersion.Parse(f.Substring(packageId.Length + 1)))
                 .Single();
-            _envVariables["YarnVersion"] = yarnVersion.ToNormalizedString();
+            _envVariables["TestPackageVersion"] = yarnVersion.ToNormalizedString();
         }
 
         public void Dispose()

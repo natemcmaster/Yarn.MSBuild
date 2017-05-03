@@ -52,18 +52,21 @@ ensure_dotnet $dotnet_home 1.0.3
 echo "dotnet = $(dotnet --version)"
 
 yarn_version=$(<yarn.version)
+export YarnVersion=$yarn_version
 proj_dir="$(pwd)/src/Yarn.MSBuild"
 dist_dir="$proj_dir/dist"
 if [ -d $dist_dir ]; then
     rm -r $dist_dir
 fi
 
-tmp_dir=$(mktemp -d)
+yarn_archive="dist/yarn-v$yarn_version.tar.gz"
+if [ ! -f $yarn_archive ]; then
+    mkdir dist/
+    __exec wget -O $yarn_archive https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz
+fi
+rm -r $proj_dir/dist 2>/dev/null && :
+__exec tar -zx -C $proj_dir -f $yarn_archive
 
-__exec wget -O $tmp_dir/yarn.tar.gz https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz
-__exec tar -zx -C $proj_dir -f $tmp_dir/yarn.tar.gz
-rm $tmp_dir/yarn.tar.gz
-
-__exec dotnet restore /p:VersionPrefix=$yarn_version
-__exec dotnet pack --configuration $config --output "$artifacts" /p:VersionPrefix=$yarn_version
+__exec dotnet restore
+__exec dotnet pack --configuration $config --output "$artifacts"
 __exec dotnet test --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj

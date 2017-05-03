@@ -1,8 +1,9 @@
 Yarn.MSBuild
 ============
 
-[![Travis](https://img.shields.io/travis/natemcmaster/Yarn.MSBuild.svg?style=flat&label=travis)](https://travis-ci.org/natemcmaster/Yarn.MSBuild)
-[![NuGet](https://img.shields.io/nuget/v/Yarn.MSBuild.svg?style=flat)](https://nuget.org/packages/Yarn.MSBuild)
+[![Travis](https://img.shields.io/travis/natemcmaster/Yarn.MSBuild.svg?style=flat-square&label=travis)](https://travis-ci.org/natemcmaster/Yarn.MSBuild)
+[![AppVeyor](https://img.shields.io/appveyor/ci/natemcmaster/yarn-msbuild.svg?style=flat-square&label=appveyor)](https://ci.appveyor.com/project/natemcmaster/yarn-msbuild)
+[![NuGet](https://img.shields.io/nuget/v/Yarn.MSBuild.svg?style=flat-square)](https://nuget.org/packages/Yarn.MSBuild)
 
 
 An MSBuild task for running the Yarn package manager.
@@ -30,7 +31,7 @@ This package is designed for use with ASP.NET Core projects.
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="0.21.3" />
+    <PackageReference Include="Yarn.MSBuild" Version="0.22.0" />
   </ItemGroup>
 </Project>
 ```

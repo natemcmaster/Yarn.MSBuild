@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.DotNet.Cli.Utils;
 
 namespace Yarn.MSBuild.Tests.Utilities
@@ -17,21 +18,31 @@ namespace Yarn.MSBuild.Tests.Utilities
         }
 
         public CommandResult Restore()
-            => RunCommand("restore");
+            => RunCommand("/t:Restore");
 
         public CommandResult Build(params string[] args)
-            => RunCommand("build", args);
+            => RunCommand(new[] { "/t:Build" }.Concat(args).ToArray());
 
         public CommandResult Msbuild(params string[] args)
-            => RunCommand("msbuild", args);
+            => RunCommand(args);
 
         public CommandResult Clean()
-            => RunCommand("clean");
+            => RunCommand("/t:Clean");
 
-        private CommandResult RunCommand(string commandName, params string[] args)
+        private CommandResult RunCommand(params string[] args)
         {
-            var cmd = Command
-                .CreateDotNet(commandName, args)
+            Command cmd;
+            string commandName;
+#if NETCOREAPP1_1
+            commandName = "dotnet msbuild";
+            cmd = Command.CreateDotNet("msbuild", args);
+#elif NET461
+            commandName = "msbuild";
+            cmd = Command.Create("msbuild", args);
+#else
+#error Target frameworks need to be updated
+#endif
+            cmd
                 .CaptureStdErr()
                 .CaptureStdOut()
                 .WorkingDirectory(Root.FullName);
@@ -41,7 +52,7 @@ namespace Yarn.MSBuild.Tests.Utilities
                 cmd.EnvironmentVariable(env.Key, env.Value);
             }
 
-            Console.WriteLine($"Running 'dotnet {commandName} {string.Join(" ", args)}' in '{Root.FullName}'");
+            Console.WriteLine($"Running '{commandName} {string.Join(" ", args)}' in '{Root.FullName}'");
             return cmd.Execute();
         }
 

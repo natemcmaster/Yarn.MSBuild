@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -26,14 +27,14 @@ namespace Yarn.MSBuild
                 return false;
             }
 
-            var (exe, args) = GetYarnExe();
+            var settings = GetYarnExe();
 
             var process = new Process
             {
                 StartInfo = 
                 {
-                    FileName = exe,
-                    Arguments = args,
+                    FileName = settings.Item1,
+                    Arguments = settings.Item2,
                     WorkingDirectory = dir,
                 }
             };
@@ -49,7 +50,7 @@ namespace Yarn.MSBuild
             }
             catch (Win32Exception)
             {
-                Log.LogError($"Failed to start yarn from '{exe}'. You can override this by setting the {nameof(ExecutablePath)} property on the Yarn task.");
+                Log.LogError($"Failed to start yarn from '{settings.Item1}'. You can override this by setting the {nameof(ExecutablePath)} property on the Yarn task.");
                 return false;
             }
 
@@ -73,7 +74,7 @@ namespace Yarn.MSBuild
             return WorkingDirectory;
         }
 
-        private (string exe, string args) GetYarnExe()
+        private Tuple<string, string> GetYarnExe()
         {
             string exe;
             if (string.IsNullOrEmpty(ExecutablePath))
@@ -108,7 +109,7 @@ namespace Yarn.MSBuild
                 args = Command;
             }
 
-            return (exe, args);
+            return Tuple.Create(exe, args);
         }
 
         private string FindBundledYarn()
