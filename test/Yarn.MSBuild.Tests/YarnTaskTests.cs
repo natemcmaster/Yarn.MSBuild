@@ -1,7 +1,7 @@
-using FluentAssertions;
-using Yarn.MSBuild.Tests.Utilities;
-using Xunit;
 using System.Runtime.InteropServices;
+using FluentAssertions;
+using Xunit;
+using Yarn.MSBuild.Tests.Utilities;
 
 namespace Yarn.MSBuild.Tests
 {
@@ -47,7 +47,7 @@ namespace Yarn.MSBuild.Tests
             proj.Root.Should().HaveFile("yarn.lock");
 
             proj.Root.GetFile("yarn.lock").Delete();
-            proj.Build("--framework", "netcoreapp1.1").Should().Pass();
+            proj.Build("/p:TargetFramework=netcoreapp1.1").Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
 
             var secondTfm = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
@@ -55,7 +55,7 @@ namespace Yarn.MSBuild.Tests
                 : "netcoreapp1.0";
                 
             proj.Root.GetFile("yarn.lock").Delete();
-            proj.Build("--framework", secondTfm).Should().Pass();
+            proj.Build($"/p:TargetFramework={secondTfm}").Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
 
             proj.Done();

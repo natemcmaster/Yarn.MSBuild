@@ -58,11 +58,13 @@ if [ -d $dist_dir ]; then
     rm -r $dist_dir
 fi
 
-tmp_dir=$(mktemp -d)
-
-__exec wget -O $tmp_dir/yarn.tar.gz https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz
-__exec tar -zx -C $proj_dir -f $tmp_dir/yarn.tar.gz
-rm $tmp_dir/yarn.tar.gz
+yarn_archive="dist/yarn-v$yarn_version.tar.gz"
+if [ ! -f $yarn_archive ]; then
+    mkdir dist/
+    __exec wget -O $yarn_archive https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz
+fi
+rm -r $proj_dir/dist 2>/dev/null && :
+__exec tar -zx -C $proj_dir -f $yarn_archive
 
 __exec dotnet restore /p:VersionPrefix=$yarn_version
 __exec dotnet pack --configuration $config --output "$artifacts" /p:VersionPrefix=$yarn_version

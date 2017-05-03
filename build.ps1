@@ -41,7 +41,7 @@ if (!(Test-Path $yarn_archive)) {
     mkdir dist/ -ErrorAction Ignore | Out-Null
     iwr https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz -outfile $yarn_archive
 }
-
+rm -r "$proj_dir/dist" -ErrorAction Ignore | Out-Null
 __exec tools/7z.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
 __exec tools/7z.exe x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar" 
 
