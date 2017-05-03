@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">..\tools\netstandard1.6\Yarn.MSBuild.dll</_YarnTaskAssembly>
-    <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">..\tools\net46\Yarn.MSBuild.dll</_YarnTaskAssembly>
+    <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">..\tools\net461\Yarn.MSBuild.dll</_YarnTaskAssembly>
     <_YarnExecutable>$(MSBuildThisFileDirectory)..\dist\bin\yarn</_YarnExecutable>
     <_YarnExecutable Condition="'$(OS)' == 'Windows_NT'">$(_YarnExecutable).cmd</_YarnExecutable>
   </PropertyGroup>

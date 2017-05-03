@@ -1,28 +1,54 @@
 #!/usr/bin/env bash
 
-set -e -o pipefail
-source ./scripts/common.sh
+set -o pipefail
 
-if [[ "$TRAVIS_BUILD_NUMBER" != "" && "$TRAVIS_BRANCH" != "master" ]]; then
-    build_number=$(printf "%04d" $TRAVIS_BUILD_NUMBER)
-    echo "BuildNumber=$build_number"
-    export BuildNumber=$build_number
-fi
+RED='\033[31m'
+CYAN='\033[36m'
+YELLOW='\033[33m'
+RESET='\033[0m'
+
+__exec() {
+    local cmd=$1
+    shift
+    echo -e "${CYAN}> $cmd $@${RESET}"
+    set +e
+    $cmd $@
+    local exit_code=$?
+    set -e
+    if [ $exit_code -ne 0 ]; then
+        echo -e "${RED}Failed with exit code $exit_code${RESET}"
+        exit 1
+    fi
+}
+
+_download() {
+    curl -sSL https://raw.githubusercontent.com/dotnet/cli/rel/1.0.1/scripts/obtain/dotnet-install.sh \
+        | bash -s -- -i $dir -v $version
+}
+
+ensure_dotnet() {
+    dir=$1
+    shift
+    version=$1
+    shift
+    export PATH="$dir:$PATH"
+    if ! which dotnet >/dev/null ; then
+        _download $dir $version
+    else
+        current_version="$(dotnet --version || echo '')"
+        if [[ "$current_version" != "$version" ]]; then
+            _download $dir $version
+        fi
+    fi
+}
+
 config='Release'
 
-netfxversion='4.6.0'
-export ReferenceAssemblyRoot="$(pwd)/obj/refs/content/"
-mkdir -p $ReferenceAssemblyRoot
-if [ ! -e 'obj/refs.zip' ]; then
-    wget -O obj/refs.zip https://dotnet.myget.org/F/aspnetcore-tools/api/v2/package/NETFrameworkReferenceAssemblies/$netfxversion
-    unzip -q -d obj/refs/ obj/refs.zip
-fi
-
-dotnet_home="$(pwd)/.dotnet"
+dotnet_home="$HOME/.dotnet"
 artifacts="$(pwd)/artifacts"
 
 rm -r "$artifacts" 2>/dev/null && :
-ensure_dotnet $dotnet_home 1.0.1
+ensure_dotnet $dotnet_home 1.0.3
 echo "dotnet = $(dotnet --version)"
 __exec dotnet restore
 __exec dotnet msbuild /nologo src/Yarn.MSBuild/ /t:GetYarn

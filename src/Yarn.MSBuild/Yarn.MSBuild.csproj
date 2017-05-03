@@ -9,9 +9,11 @@ Automatically installs Node modules into web projects. This uses yarn, an altern
 
 This package also provides an MSBuild task for invoking Yarn commands.
     </Description>
+    <MinClientVersion>4.0.0</MinClientVersion>
     <Copyright>Copyright Nate McMaster</Copyright>
     <Authors>Nate McMaster</Authors>
-    <TargetFrameworks>netstandard1.6;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.6</TargetFrameworks>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -26,9 +28,9 @@ This package also provides an MSBuild task for invoking Yarn commands.
 
   <ItemGroup>
     <PackageReference Include="System.ValueTuple" Version="4.3.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-*" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.0-*" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-*" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.1012" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" PrivateAssets="All"/>
   </ItemGroup>
 
   <ItemGroup>

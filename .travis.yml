@@ -2,15 +2,6 @@ language: csharp
 sudo: false
 dist: trusty
 mono: none
-dotnet: 1.0.1
-env:
-  global:
-    secure: "hoYGtEXDJJQTubNciXZ0T2KlK827x2N+mwxtrDTfawQ/cQgbu67Z5rd7RupTZ03/f3p5i8KK3KV/3NrRbe6m8sypbQczp1+5A3YEvwX0GJg96GwE+k7TssH+UoY4/LarmaL5a9sPODOEYGRG9tArbYiiMSJGfaudhxKKujuDHY8n25cg6TYKhPOnUMrjMaVkj9A6A4sJ8l2NuIZk4pWfL8ykruyTpIEdlvYZHOsVR8coM4a0BN3ACd21eTtDNvwavUF47PpCyM/qQn5dmVfZ4sEDWiIoubvv9HHvDkLgEfi+p/Jrof0aISM3s6/1swpLf6n/OQvlomAwICoWRx9XRxXBF+k48zjyqh6VeX02xVqiQD7KVxFDLIe7aLmeuu/OePwxqgM3PqqH/n6JZnp4112sRRK7pEumoNh9e/2xzuoa7obDbjzbyLiiQw/YdpXvuQB4xPuq8ur+NirlWJ9eZVJp0v1Fk2GzVPWWbDCU39jaLPfZxiuMR3sW11r0DctkC4EQqqc/whEEr7hgU+mbxSLMYd3lgqGO4SELSGf7nCQ2Y08gATEJEFl3q9S3Jjyui5zP1WX6VT9lW0UjWzuSdAGi13eDJwU/fp8/54NvF4non+dR/qdPbvRMm9ZLsRcVvFFDNm7YhrY2Otg0Vi6hLzm+gwjt4r2lTJ2HEeuN/os="
+dotnet: 1.0.3
 script:
   - ./build.sh
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: scripts/push-packages.sh
-  on:
-    tags: true
