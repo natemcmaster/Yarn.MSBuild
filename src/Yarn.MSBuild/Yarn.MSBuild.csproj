@@ -10,8 +10,10 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
     <VersionPrefix>$(YarnVersion)</VersionPrefix>
     <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' != 'master'">alpha</VersionSuffix>
+    <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' == 'master'">beta</VersionSuffix>
     <BuildNumber Condition="'$(APPVEYOR_BUILD_NUMBER)' != ''">$([System.Int32]::Parse('$(APPVEYOR_BUILD_NUMBER)').ToString('D5'))</BuildNumber>
     <VersionSuffix Condition="'$(VersionSuffix)' != '' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
+    <VersionSuffix Condition="'$(APPVEYOR_REPO_TAG)' == 'true'"></VersionSuffix>
     <Copyright>Copyright Nate McMaster</Copyright>
     <Authors>Nate McMaster</Authors>
     <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
@@ -26,6 +28,7 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <RepositoryUrl>https://github.com/natemcmaster/Yarn.MSBuild</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/yarnpkg/yarn/releases/tag/v$(YarnVersion)</PackageReleaseNotes>
     <PackageTags>yarn;node;npm;msbuild;javascript;yarn.msbuild</PackageTags>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildThisFileDirectory)dist\**\*</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,7 +40,8 @@ This package also provides an MSBuild task for invoking Yarn commands.
   <ItemGroup>
     <Content Include="build\**\*" PackagePath="%(Identity)" />
     <Content Include="buildMultiTargeting\**\*" PackagePath="%(Identity)" />
-    <Content Include="dist\**\*" PackagePath="%(Identity)" />
+    <YarnDist Include="dist\**\*" PackagePath="%(Identity)" />
+    <Content Include="@(YarnDist)" />
     <Content Include="third_party_notice.txt" PackagePath="/" />
   </ItemGroup>
 
@@ -47,4 +51,7 @@ This package also provides an MSBuild task for invoking Yarn commands.
           IgnoreStandardErrorWarningFormat="true" />
   </Target>
 
+  <Target Name="EnsureDistFiles" BeforeTargets="GenerateNuspec">
+    <Error Text="Could not find files in dist/ to include in the package" Condition="'@(YarnDist->Count())' == 0" />
+  </Target>
 </Project>

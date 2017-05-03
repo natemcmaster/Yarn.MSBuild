@@ -31,20 +31,26 @@ if (Test-Path $dist_dir) {
     rm -r $dist_dir
 }
 
+$yarn_archive = "$PSScriptRoot/dist/yarn-v$yarn_version.tar.gz"
+if (!(Test-Path $yarn_archive)) {
+    write-host -ForegroundColor Cyan "Downloading yarn-v$yarn_version.tar.gz"
+    mkdir dist/ -ErrorAction Ignore | Out-Null
+    iwr https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz -outfile $yarn_archive
+}
+
 if (!(Test-Path tools/7z.exe)) {
+    write-host -ForegroundColor Cyan "Downloading 7z.exe"
     mkdir tools/ -ErrorAction Ignore | Out-Null
     iwr http://www.7-zip.org/a/7z1604-x64.exe -OutFile tools/7z.exe
 }
 
-$yarn_archive = "dist/yarn-v$yarn_version.tar.gz"
-if (!(Test-Path $yarn_archive)) {
-    write-host -ForegroundColor Cyan "Downloading $yarn_archive"
-    mkdir dist/ -ErrorAction Ignore | Out-Null
-    iwr https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz -outfile $yarn_archive
+cp tools/7z.exe ./
+try {
+    __exec 7z x -y -tgzip "-o${env:TEMP}" $yarn_archive
+    __exec 7z x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar" 
+} finally {
+    rm 7z.exe
 }
-rm -r "$proj_dir/dist" -ErrorAction Ignore | Out-Null
-__exec tools/7z.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
-__exec tools/7z.exe x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar" 
 
 __exec dotnet restore
 __exec dotnet pack --configuration $config --output $artifacts
