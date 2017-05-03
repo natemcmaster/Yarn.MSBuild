@@ -28,6 +28,7 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <RepositoryUrl>https://github.com/natemcmaster/Yarn.MSBuild</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/yarnpkg/yarn/releases/tag/v$(YarnVersion)</PackageReleaseNotes>
     <PackageTags>yarn;node;npm;msbuild;javascript;yarn.msbuild</PackageTags>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildThisFileDirectory)dist\**\*</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
