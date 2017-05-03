@@ -39,7 +39,8 @@ This package also provides an MSBuild task for invoking Yarn commands.
   <ItemGroup>
     <Content Include="build\**\*" PackagePath="%(Identity)" />
     <Content Include="buildMultiTargeting\**\*" PackagePath="%(Identity)" />
-    <Content Include="dist\**\*" PackagePath="%(Identity)" />
+    <YarnDist Include="dist\**\*" PackagePath="%(Identity)" />
+    <Content Include="@(YarnDist)" />
     <Content Include="third_party_notice.txt" PackagePath="/" />
   </ItemGroup>
 
@@ -49,4 +50,7 @@ This package also provides an MSBuild task for invoking Yarn commands.
           IgnoreStandardErrorWarningFormat="true" />
   </Target>
 
+  <Target Name="EnsureDistFiles" BeforeTargets="GenerateNuspec">
+    <Error Text="Could not find files in dist/ to include in the package" Condition="'@(YarnDist->Count())' == 0" />
+  </Target>
 </Project>
