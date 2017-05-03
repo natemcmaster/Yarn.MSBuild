@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="$(AspNetCoreVersion)"/>
-    <PackageReference Include="Yarn.MSBuild" Version="$(YarnVersion)" />
+    <PackageReference Include="Yarn.MSBuild" Version="$(TestPackageVersion)" />
   </ItemGroup>
 
 </Project>

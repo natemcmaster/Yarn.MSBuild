@@ -69,7 +69,7 @@ namespace Yarn.MSBuild.Tests.Utilities
                 .Where(f => f.StartsWith(packageId))
                 .Select(f => NuGetVersion.Parse(f.Substring(packageId.Length + 1)))
                 .Single();
-            _envVariables["YarnVersion"] = yarnVersion.ToNormalizedString();
+            _envVariables["TestPackageVersion"] = yarnVersion.ToNormalizedString();
         }
 
         public void Dispose()

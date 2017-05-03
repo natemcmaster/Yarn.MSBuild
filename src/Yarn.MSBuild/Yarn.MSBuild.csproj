@@ -7,6 +7,8 @@ Automatically installs Node modules into web projects. This uses yarn, an altern
 
 This package also provides an MSBuild task for invoking Yarn commands.
     </Description>
+    <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
+    <VersionPrefix>$(YarnVersion)</VersionPrefix>
     <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' != 'master'">alpha</VersionSuffix>
     <BuildNumber Condition="'$(APPVEYOR_BUILD_NUMBER)' != ''">$([System.Int32]::Parse('$(APPVEYOR_BUILD_NUMBER)').ToString('D5'))</BuildNumber>
     <VersionSuffix Condition="'$(VersionSuffix)' != '' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>

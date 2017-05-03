@@ -4,7 +4,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Yarn.MSBuild" Version="$(YarnVersion)" />
+    <PackageReference Include="Yarn.MSBuild" Version="$(TestPackageVersion)" />
   </ItemGroup>
 
   <Target Name="RunYarnTest">

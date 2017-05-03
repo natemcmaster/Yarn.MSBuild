@@ -21,6 +21,7 @@ if (Test-Path $artifacts) {
 }
 
 $yarn_version = Get-Content "$PSScriptRoot/yarn.version"
+$env:YarnVersion = $yarn_version
 
 echo "dotnet = $(dotnet --version)"
 
@@ -45,6 +46,6 @@ rm -r "$proj_dir/dist" -ErrorAction Ignore | Out-Null
 __exec tools/7z.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
 __exec tools/7z.exe x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar" 
 
-__exec dotnet restore /p:VersionPrefix=$yarn_version
-__exec dotnet pack --configuration $config --output $artifacts /p:VersionPrefix=$yarn_version
+__exec dotnet restore
+__exec dotnet pack --configuration $config --output $artifacts
 __exec dotnet test --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
