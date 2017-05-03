@@ -1,7 +1,9 @@
 #!/usr/bin/env powershell
 
+$ErrorActionPreference = 'Stop'
+
 function __exec($cmd) {
-    write-host -fg Cyan "> $cmd $args"
+    write-host -ForegroundColor Cyan "> $cmd $args"
     & $cmd @args
     $exit_code = $LASTEXITCODE
     if ($exit_code -ne 0) {
@@ -26,8 +28,10 @@ if (Test-Path $dist_dir) {
     rm -r $dist_dir
 }
 
+iwr http://www.7-zip.org/a/7z1604-x64.exe -OutFile 7z.exe
 iwr https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz -outfile $env:TEMP/yarn.tar.gz
-__exec 7z x -y -so $env:TEMP/yarn.tar.gz | 7z x -y -si -ttar -o $proj_dir
+write-host -ForegroundColor Cyan 'Extracting yarn.tar.gz'
+7z.exe x -y -so $env:TEMP/yarn.tar.gz | 7z.exe x -y -si -ttar -o $proj_dir
 rm $env:TEMP/yarn.tar.gz
 
 __exec dotnet restore /p:VersionPrefix=$yarn_version
