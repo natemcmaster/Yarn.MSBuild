@@ -50,7 +50,20 @@ artifacts="$(pwd)/artifacts"
 rm -r "$artifacts" 2>/dev/null && :
 ensure_dotnet $dotnet_home 1.0.3
 echo "dotnet = $(dotnet --version)"
-__exec dotnet restore
-__exec dotnet msbuild /nologo src/Yarn.MSBuild/ /t:GetYarn
-__exec dotnet pack -c $config -o "$artifacts"
+
+yarn_version=$(<yarn.version)
+proj_dir="$(pwd)/src/Yarn.MSBuild"
+dist_dir="$proj_dir/dist"
+if [ -d $dist_dir ]; then
+    rm -r $dist_dir
+fi
+
+tmp_dir=$(mktemp -d)
+
+__exec wget -O $tmp_dir/yarn.tar.gz https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz
+__exec tar -zx -C $proj_dir -f $tmp_dir/yarn.tar.gz
+rm $tmp_dir/yarn.tar.gz
+
+__exec dotnet restore /p:VersionPrefix=$yarn_version
+__exec dotnet pack -c $config -o "$artifacts" /p:VersionPrefix=$yarn_version
 __exec dotnet test -c $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj

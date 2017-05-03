@@ -1,7 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\version.props" />
-
   <PropertyGroup>
     <Description>MSBuild integration for the Yarn package manager.
     
@@ -9,6 +7,7 @@ Automatically installs Node modules into web projects. This uses yarn, an altern
 
 This package also provides an MSBuild task for invoking Yarn commands.
     </Description>
+    <VersionSuffix Condition="'$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
     <MinClientVersion>4.0.0</MinClientVersion>
     <Copyright>Copyright Nate McMaster</Copyright>
     <Authors>Nate McMaster</Authors>
@@ -39,17 +38,5 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <Content Include="dist\**\*" PackagePath="%(Identity)" />
     <Content Include="third_party_notice.txt" PackagePath="/" />
   </ItemGroup>
-
-  <Target Name="GetYarn" Condition="!Exists('dist/')">
-    <PropertyGroup>
-      <_TmpTgz>obj/yarn$(YarnVersion).tgz</_TmpTgz>
-    </PropertyGroup>
-
-    <RemoveDir Directories="dist/" />
-    <Delete Files="$(_TmpTgz)" Condition="Exists('$(_TmpTgz)')" />
-    <Exec Command="wget -O $(_TmpTgz) https://github.com/yarnpkg/yarn/releases/download/v$(YarnVersion)/yarn-v$(YarnVersion).tar.gz" />
-    <Message Importance="High" Text="Extracting $(_TmpTgz)" />
-    <Exec Command="tar zxf $(_TmpTgz)" />
-  </Target>
 
 </Project>

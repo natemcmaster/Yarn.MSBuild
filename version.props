@@ -1,7 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <YarnVersion>0.21.3</YarnVersion>
-    <VersionPrefix>$(YarnVersion)</VersionPrefix>
-    <VersionSuffix Condition="'$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
-  </PropertyGroup>
-</Project>
