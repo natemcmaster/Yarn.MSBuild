@@ -11,9 +11,10 @@ branches:
     - master
     - develop
     - appveyor
+artifacts:
+  - path: 'artifacts\*.nupkg'
 deploy:
   - provider: NuGet
-    artifact: /artifacts\/.*\.nupkg/
     skip_symbols: true
     api_key:
       secure: VFNEM1Py3Wavrd8I9eOWquMkcJnjgQzesKEFwd8+n0ZwbuDDbZexUaYJSQAzXND4
