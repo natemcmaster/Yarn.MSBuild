@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.1;net46</TargetFrameworks>
-    <RuntimeFrameworkVersion>1.1.0</RuntimeFrameworkVersion>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp1.1;netcoreapp1.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" Condition="'$(TargetFramework)' == 'netcoreapp1.1'" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.0.4" Condition="'$(TargetFramework)' == 'netcoreapp1.0'" />
     <PackageReference Include="Yarn.MSBuild" Version="$(YarnVersion)" />
   </ItemGroup>
 

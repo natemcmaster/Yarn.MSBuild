@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Yarn.MSBuild.Tests.Utilities;
 using Xunit;
+using System.Runtime.InteropServices;
 
 namespace Yarn.MSBuild.Tests
 {
@@ -42,17 +43,22 @@ namespace Yarn.MSBuild.Tests
             proj.Restore().Should().Pass();
 
             proj.Root.Should().NotHaveFile("yarn.lock");
-            proj.Build().Should().Pass();  
+            proj.Build().Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
 
             proj.Root.GetFile("yarn.lock").Delete();
-            proj.Build("--framework", "netcoreapp1.1").Should().Pass();  
+            proj.Build("--framework", "netcoreapp1.1").Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
-            
+
+            var secondTfm = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                ? "net46"
+                : "netcoreapp1.0";
+                
             proj.Root.GetFile("yarn.lock").Delete();
-            proj.Build("--framework", "net46").Should().Pass();  
+            proj.Build("--framework", secondTfm).Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
-            proj.Done();          
+
+            proj.Done();
         }
 
         [Fact]
