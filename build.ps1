@@ -24,21 +24,26 @@ $yarn_version = Get-Content "$PSScriptRoot/yarn.version"
 
 echo "dotnet = $(dotnet --version)"
 
-$temp_dir = "$PSScriptRoot/obj"
 $proj_dir = "$PSScriptRoot/src/Yarn.MSBuild"
 $dist_dir = "$proj_dir/dist"
 if (Test-Path $dist_dir) {
     rm -r $dist_dir
 }
 
-mkdir $temp_dir -ErrorAction Ignore | Out-Null
-mkdir tools/ -ErrorAction Ignore | Out-Null
-iwr http://www.7-zip.org/a/7z1604-x64.exe -OutFile tools/7z.exe
-iwr https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz -outfile $temp_dir/yarn.tar.gz
-write-host -ForegroundColor Cyan 'Extracting yarn.tar.gz'
-__exec tools/7z.exe x -y -tgzip "-o$temp_dir" "$temp_dir/yarn.tar.gz"
-__exec tools/7z.exe x -y -ttar "-o$proj_dir" "$temp_dir/yarn.tar" 
-rm $temp_dir/yarn.tar.gz
+if (!(Test-Path tools/7z.exe)) {
+    mkdir tools/ -ErrorAction Ignore | Out-Null
+    iwr http://www.7-zip.org/a/7z1604-x64.exe -OutFile tools/7z.exe
+}
+
+$yarn_archive = "dist/yarn-v$yarn_version.tar.gz"
+if (!(Test-Path $yarn_archive)) {
+    write-host -ForegroundColor Cyan "Downloading $yarn_archive"
+    mkdir dist/ -ErrorAction Ignore | Out-Null
+    iwr https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz -outfile $yarn_archive
+}
+
+__exec tools/7z.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
+__exec tools/7z.exe x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar" 
 
 __exec dotnet restore /p:VersionPrefix=$yarn_version
 __exec dotnet pack --configuration $config --output $artifacts /p:VersionPrefix=$yarn_version

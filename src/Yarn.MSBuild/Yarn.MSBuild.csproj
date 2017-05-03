@@ -40,7 +40,7 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <Content Include="third_party_notice.txt" PackagePath="/" />
   </ItemGroup>
 
-  <Target Name="UpdateBuildDetails" AfterTargets="Build" Condition="'$(APPVEYOR)' == 'true'">
+  <Target Name="UpdateBuildDetails" BeforeTargets="Build" Condition="'$(APPVEYOR)' == 'true'">
     <Exec Command="appveyor UpdateBuild -Version $(Version)"
           IgnoreExitCode="true"
           IgnoreStandardErrorWarningFormat="true" />
