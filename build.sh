@@ -48,7 +48,7 @@ dotnet_home="$HOME/.dotnet"
 artifacts="$(pwd)/artifacts"
 
 rm -r "$artifacts" 2>/dev/null && :
-ensure_dotnet $dotnet_home 1.0.3
+ensure_dotnet $dotnet_home 1.0.4
 echo "dotnet = $(dotnet --version)"
 
 yarn_version=$(<yarn.version)

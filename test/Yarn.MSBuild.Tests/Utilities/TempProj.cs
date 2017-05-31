@@ -26,9 +26,6 @@ namespace Yarn.MSBuild.Tests.Utilities
         public CommandResult Msbuild(params string[] args)
             => RunCommand(args);
 
-        public CommandResult Clean()
-            => RunCommand("/t:Clean");
-
         private CommandResult RunCommand(params string[] args)
         {
             Command cmd;

@@ -27,16 +27,6 @@ namespace Yarn.MSBuild.Tests
         }
 
         [Fact]
-        public void CleanWithoutBuild()
-        {
-            var proj = _projManager.Create("WebSdkProj");
-            proj.Restore().Should().Pass();
-            proj.Root.Should().NotHaveFile("yarn.lock");
-            proj.Clean().Should().Pass();
-            proj.Done();
-        }
-
-        [Fact]
         public void ShouldRunOnMultiTfmProjects()
         {
             var proj = _projManager.Create("MultiTfmWebApp");
