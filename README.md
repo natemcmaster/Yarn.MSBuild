@@ -12,11 +12,22 @@ See [Yarn's Official Website](https://yarnpkg.com/en/) for more information abou
 
 # Installation
 
+**Package Manager Console in Visual Studio**
 ```
 PM> Install-Package Yarn.MSBuild
 ```
 
-Manually install by editing .csproj and adding a `PackageReference` to `Yarn.MSBuild`.
+**.NET Core Command Line**
+```
+dotnet add package Yarn.MSBuild
+```
+
+**In csproj**
+```xml
+<ItemGroup>
+  <PackageReference Include="Yarn.MSBuild" Version="0.24.6" />
+</ItemGroup>
+```
 
 # Usage
 
@@ -30,8 +41,8 @@ This package is designed for use with ASP.NET Core projects.
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="0.22.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="Yarn.MSBuild" Version="0.24.6" />
   </ItemGroup>
 </Project>
 ```
@@ -52,13 +63,13 @@ Running `dotnet build` or `msbuild.exe /t:Build` will automatically invoke `yarn
 
 ```xml
 <PropertyGroup>
-  <!-- Prevent yarn from running on 'Build'. -->
+  <!-- Prevent yarn from running on 'Build'. Default to 'false'-->
   <SuppressAutoYarn>true</SuppressAutoYarn>
 
-  <!-- Change the yarn that runs on 'Build' from 'install' to compile. -->
+  <!-- Change the yarn that runs on 'Build'. Defaults to 'install'. -->
   <YarnBuildCommand>run build</YarnBuildCommand>
 
-  <!-- Change the directory in which yarn is invoked on build. Defaults to MSBuildProjectDirectory. -->
+  <!-- Change the directory in which yarn is invoked on build. Defaults to '$(MSBuildProjectDirectory)'. -->
   <YarnDir>wwwroot/</YarnDir>
 </PropertyGroup>
 ```
