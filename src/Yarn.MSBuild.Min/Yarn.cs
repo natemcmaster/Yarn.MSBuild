@@ -13,6 +13,9 @@ namespace Yarn.MSBuild
     {
         private const string YarnExeName = "yarn";
 
+        // name of the package that bundles yarn
+        private const string BundledPackageId = "yarn.msbuild";
+
         public string Command { get; set; }
 
         public string WorkingDirectory { get; set; }
@@ -31,7 +34,7 @@ namespace Yarn.MSBuild
 
             var process = new Process
             {
-                StartInfo = 
+                StartInfo =
                 {
                     FileName = settings.Item1,
                     Arguments = settings.Item2,
@@ -80,9 +83,9 @@ namespace Yarn.MSBuild
             if (string.IsNullOrEmpty(ExecutablePath))
             {
                 exe = FindBundledYarn();
-                if (!File.Exists(exe))
+                if (string.IsNullOrEmpty(exe) || !File.Exists(exe))
                 {
-                    Log.LogMessage("Failed to find the version of yarn bundled in this package. [{0}]", exe);
+                    Log.LogMessage("Failed to find the version of yarn that matches this package version. It may not be installed. [{0}]", exe);
                     exe = YarnExeName;
                 }
             }
@@ -114,12 +117,26 @@ namespace Yarn.MSBuild
 
         private string FindBundledYarn()
         {
-            var assembly = typeof(Yarn).GetTypeInfo().Assembly.Location;
-            var nugetRoot = new FileInfo(assembly) // Yarn.MSBuild.dll
-                .Directory // tfm
-                .Parent // tools
-                .Parent.FullName; // nuget package
-            return Path.Combine(nugetRoot, "dist/bin/yarn");
+            var assemblyInfoVersion = typeof(Yarn).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            if (assemblyInfoVersion == null)
+            {
+                return null;
+            }
+
+            var nugetPackageOverride = Environment.GetEnvironmentVariable("NUGET_PACKAGES");
+            var home = Environment.GetEnvironmentVariable("USERPROFILE")
+                ?? Environment.GetEnvironmentVariable("HOME")
+                ?? Environment.GetEnvironmentVariable("HOMEDRIVE");
+
+            if (string.IsNullOrEmpty(nugetPackageOverride) && string.IsNullOrEmpty(home))
+            {
+                Log.LogMessage("Could not determine the location of the NuGet package folder.");
+                return null;
+            }
+
+            var nugetRoot = nugetPackageOverride ?? Path.Combine(home, ".nuget", "packages");
+
+            return Path.Combine(nugetRoot, BundledPackageId, assemblyInfoVersion.InformationalVersion, "dist/bin/yarn");
         }
 
         private static bool IsWindows()

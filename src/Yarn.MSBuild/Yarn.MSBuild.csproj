@@ -1,57 +1,39 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
 
   <PropertyGroup>
     <Description>MSBuild integration for the Yarn package manager.
-    
+
 Automatically installs Node modules into web projects. This uses yarn, an alternative package manager to NPM.
 
-This package also provides an MSBuild task for invoking Yarn commands.
+This package bundles a complete copy of Yarn $(YarnVersion). If don't want the bundled version and would rather provide your own,
+use the Yarn.MSBuild.Min package.
     </Description>
-    <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
-    <VersionPrefix>$(YarnVersion)</VersionPrefix>
-    <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' != 'master'">alpha</VersionSuffix>
-    <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' == 'master'">beta</VersionSuffix>
-    <BuildNumber Condition="'$(APPVEYOR_BUILD_NUMBER)' != ''">$([System.Int32]::Parse('$(APPVEYOR_BUILD_NUMBER)').ToString('D5'))</BuildNumber>
-    <VersionSuffix Condition="'$(VersionSuffix)' != '' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
-    <VersionSuffix Condition="'$(APPVEYOR_REPO_TAG)' == 'true'"></VersionSuffix>
-    <Copyright>Copyright Nate McMaster</Copyright>
-    <Authors>Nate McMaster</Authors>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks);net461</TargetFrameworks>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <PackageIconUrl>https://cdn.rawgit.com/yarnpkg/assets/master/yarn-kitten-circle.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/natemcmaster/Yarn.MSBuild</PackageProjectUrl>
-    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/natemcmaster/Yarn.MSBuild</RepositoryUrl>
-    <PackageReleaseNotes>https://github.com/yarnpkg/yarn/releases/tag/v$(YarnVersion)</PackageReleaseNotes>
-    <PackageTags>yarn;node;npm;msbuild;javascript;yarn.msbuild</PackageTags>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildThisFileDirectory)dist\**\*</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.1012" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" PrivateAssets="All"/>
-  </ItemGroup>
-
-  <ItemGroup>
+    <!-- The NuGet placeholder ensures this packages is treated as compatible .NET Standard 1.0 -->
+    <Content Include="_._" PackagePath="lib/netstandard1.0/" />
     <Content Include="build\**\*" PackagePath="%(Identity)" />
     <Content Include="buildMultiTargeting\**\*" PackagePath="%(Identity)" />
     <YarnDist Include="dist\**\*" PackagePath="%(Identity)" />
     <Content Include="@(YarnDist)" />
     <Content Include="third_party_notice.txt" PackagePath="/" />
+    <ProjectReference Include="..\Yarn.MSBuild.Min\Yarn.MSBuild.Min.csproj" PrivateAssets="None" />
   </ItemGroup>
 
-  <Target Name="UpdateBuildDetails" BeforeTargets="Build" Condition="'$(APPVEYOR)' == 'true'">
-    <Exec Command="appveyor UpdateBuild -Version $(Version)"
-          IgnoreExitCode="true"
-          IgnoreStandardErrorWarningFormat="true" />
+  <Target Name="EnsureDistFiles" BeforeTargets="GenerateNuspec">
+    <Error Text="Could not find files in dist/ to include in the package" Condition="@(YarnDist->Count()) == 0" />
   </Target>
 
-  <Target Name="EnsureDistFiles" BeforeTargets="GenerateNuspec">
-    <Error Text="Could not find files in dist/ to include in the package" Condition="'@(YarnDist->Count())' == 0" />
-  </Target>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
+
+  <Target Name="CoreCompile" />
+  <Target Name="CopyFilesToOutputDirectory" />
+
 </Project>

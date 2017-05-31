@@ -47,11 +47,11 @@ if (!(Test-Path tools/7z.exe)) {
 cp tools/7z.exe ./
 try {
     __exec 7z x -y -tgzip "-o${env:TEMP}" $yarn_archive
-    __exec 7z x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar" 
+    __exec 7z x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar"
 } finally {
     rm 7z.exe
 }
 
 __exec dotnet restore
-__exec dotnet pack --configuration $config --output $artifacts
+__exec dotnet build --configuration $config "/p:PackageOutputPath=$artifacts"
 __exec dotnet test --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj

@@ -1,0 +1,20 @@
+<Project>
+  <PropertyGroup>
+    <BuildDependsOn Condition=" '$(SuppressAutoYarn)' != 'true' ">
+        YarnBuild;
+        $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="YarnBuild">
+    <Yarn Command="$(YarnBuildCommand)"
+          WorkingDirectory="$(YarnDir)"
+          ExecutablePath="$(_BundledYarnExecutable)"
+          Condition="'$(_YarnBuildWasRun)' != 'true'" />
+
+    <PropertyGroup>
+      <_YarnBuildWasRun>true</_YarnBuildWasRun>
+    </PropertyGroup>
+  </Target>
+
+</Project>

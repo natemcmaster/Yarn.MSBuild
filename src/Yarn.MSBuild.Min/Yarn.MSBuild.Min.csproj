@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>MSBuild integration for the Yarn package manager.
+
+Automatically installs Node modules into web projects. This uses yarn, an alternative package manager to NPM.
+
+This package also provides an MSBuild task for invoking Yarn commands.
+    </Description>
+    <AssemblyName>Yarn.MSBuild</AssemblyName>
+    <PackageId>Yarn.MSBuild.Min</PackageId>
+    <!--
+      The netstandard1.0 TFM doesn't actually compile tasks.
+      It's just there so the Yarn.MSBuild package gets a dependency to this project.
+    -->
+    <TargetFrameworks>netstandard1.0;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks);net461</TargetFrameworks>
+    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+    <!-- don't try to compile the *.cs files on netstandard1.0 -->
+    <EnableDefaultItems Condition="'$(TargetFramework)' != 'netstandard1.6' AND '$(TargetFramework)' != 'net461'">false</EnableDefaultItems>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard1.0'">
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.1012" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" PrivateAssets="All"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The NuGet placeholder ensures this packages is compatible with any runtime -->
+    <Content Include="_._" PackagePath="lib/any/" />
+    <Content Include="build\**\*" PackagePath="%(Identity)" />
+    <Content Include="buildMultiTargeting\**\*" PackagePath="%(Identity)" />
+    <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
+  </ItemGroup>
+
+  <Target Name="UpdateBuildDetails" BeforeTargets="Build" Condition="'$(APPVEYOR)' == 'true'">
+    <Exec Command="appveyor UpdateBuild -Version $(Version)"
+          IgnoreExitCode="true"
+          IgnoreStandardErrorWarningFormat="true" />
+  </Target>
+
+</Project>
