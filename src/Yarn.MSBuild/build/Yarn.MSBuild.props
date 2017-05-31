@@ -1,7 +1,19 @@
 <Project>
-  <!-- use bundled yarn -->
   <PropertyGroup>
-    <_BundledYarnExecutable>$(MSBuildThisFileDirectory)..\dist\bin\yarn</_BundledYarnExecutable>
-    <_BundledYarnExecutable Condition="'$(OS)' == 'Windows_NT'">$(_BundledYarnExecutable).cmd</_BundledYarnExecutable>
+    <!-- set to 'false' in your csproj to prevent yarn from running on 'Build' -->
+    <SuppressAutoYarn>false</SuppressAutoYarn>
+    <!-- the default yarn command to run on build -->
+    <YarnBuildCommand>install</YarnBuildCommand>
+    <!-- set in your project to override location of yarn file-->
+    <YarnDir>$(MSBuildProjectDirectory)</YarnDir>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">..\tools\netstandard1.6\Yarn.MSBuild.dll</_YarnTaskAssembly>
+    <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">..\tools\net461\Yarn.MSBuild.dll</_YarnTaskAssembly>
+    <_YarnExecutable>$(MSBuildThisFileDirectory)..\dist\bin\yarn</_YarnExecutable>
+    <_YarnExecutable Condition="'$(OS)' == 'Windows_NT'">$(_YarnExecutable).cmd</_YarnExecutable>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(_YarnTaskAssembly)" TaskName="Yarn.MSBuild.Yarn" />
 </Project>

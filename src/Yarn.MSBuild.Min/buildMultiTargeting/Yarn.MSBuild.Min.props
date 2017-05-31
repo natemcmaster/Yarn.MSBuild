@@ -1,3 +1,0 @@
-<Project>
-  <Import Project="..\build\Yarn.MSBuild.Min.props" />
-</Project>

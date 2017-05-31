@@ -56,19 +56,6 @@ namespace Yarn.MSBuild.Tests.Utilities
             _envVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"] = bool.TrueString;
 
             var packageId = "Yarn.MSBuild";
-            DeletePackage(home, packageId);
-            DeletePackage(home, "Yarn.MSBuild.Min");
-
-            var yarnVersion = Directory.EnumerateFiles(artifacts, "*.nupkg")
-                .Select(f => Path.GetFileNameWithoutExtension(f))
-                .Where(f => f.StartsWith(packageId) && !f.Contains("Min"))
-                .Select(f => NuGetVersion.Parse(f.Substring(packageId.Length + 1)))
-                .Single();
-            _envVariables["TestPackageVersion"] = yarnVersion.ToNormalizedString();
-        }
-
-        private static void DeletePackage(string home, string packageId)
-        {
             var packagesDir = Environment.GetEnvironmentVariable("NUGET_PACKAGES") ?? Path.Combine(home, ".nuget", "packages");
             var yarnPkgDir = Path.Combine(packagesDir, packageId.ToLowerInvariant());
             if (Directory.Exists(yarnPkgDir))
@@ -76,6 +63,13 @@ namespace Yarn.MSBuild.Tests.Utilities
                 Console.WriteLine($"Deleting {yarnPkgDir}");
                 Directory.Delete(yarnPkgDir, recursive: true);
             }
+
+            var yarnVersion = Directory.EnumerateFiles(artifacts, "*.nupkg")
+                .Select(f => Path.GetFileNameWithoutExtension(f))
+                .Where(f => f.StartsWith(packageId))
+                .Select(f => NuGetVersion.Parse(f.Substring(packageId.Length + 1)))
+                .Single();
+            _envVariables["TestPackageVersion"] = yarnVersion.ToNormalizedString();
         }
 
         public void Dispose()
