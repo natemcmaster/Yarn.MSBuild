@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using NuGet.Versioning;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Yarn.MSBuild.Tests.Utilities
 {
@@ -80,12 +81,12 @@ namespace Yarn.MSBuild.Tests.Utilities
             }
         }
 
-        public TempProj Create(string testAppName)
+        public TempProj Create(string testAppName, ITestOutputHelper output)
         {
             var source = Path.Combine(_baseDir, testAppName);
             var tempDir = Path.Combine(_workDir, Guid.NewGuid().ToString());
             CopyRecursive(source, tempDir);
-            var tmp = new TempProj(_envVariables, tempDir);
+            var tmp = new TempProj(_envVariables, tempDir, output);
             _disposables.Push(tmp);
             return tmp;
         }

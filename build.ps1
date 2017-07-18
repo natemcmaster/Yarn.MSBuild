@@ -1,6 +1,7 @@
 #!/usr/bin/env powershell
 
 $ErrorActionPreference = 'Stop'
+Set-StrictMode -Version 2
 
 function __exec($cmd) {
     write-host -ForegroundColor Cyan "> $cmd $args"
@@ -38,20 +39,21 @@ if (!(Test-Path $yarn_archive)) {
     iwr https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz -outfile $yarn_archive
 }
 
-if (!(Test-Path tools/7z.exe)) {
-    write-host -ForegroundColor Cyan "Downloading 7z.exe"
+if (!(Test-Path tools/7za.exe)) {
+    write-host -ForegroundColor Cyan "Downloading 7za.exe"
     mkdir tools/ -ErrorAction Ignore | Out-Null
-    iwr http://www.7-zip.org/a/7z1604-x64.exe -OutFile tools/7z.exe
+    iwr http://www.7-zip.org/a/7za920.zip -OutFile tools/7za.zip
+    Expand-Archive tools/7za.zip -DestinationPath ./tools
 }
 
-cp tools/7z.exe ./
+cp tools/7za.exe ./
 try {
-    __exec 7z x -y -tgzip "-o${env:TEMP}" $yarn_archive
-    __exec 7z x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar" 
+    __exec ./7za.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
+    __exec ./7za.exe x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar"
 } finally {
-    rm 7z.exe
+    rm 7za.exe
 }
 
 __exec dotnet restore
-__exec dotnet pack --configuration $config --output $artifacts
+__exec dotnet build --configuration $config
 __exec dotnet test --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj

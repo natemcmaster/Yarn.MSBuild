@@ -68,5 +68,5 @@ rm -r $proj_dir/dist 2>/dev/null && :
 __exec tar -zx -C $proj_dir -f $yarn_archive
 
 __exec dotnet restore
-__exec dotnet pack --configuration $config --output "$artifacts"
+__exec dotnet build --configuration $config
 __exec dotnet test --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj

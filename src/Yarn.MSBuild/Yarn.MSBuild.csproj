@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>MSBuild integration for the Yarn package manager.
-    
+
 Automatically installs Node modules into web projects. This uses yarn, an alternative package manager to NPM.
 
 This package also provides an MSBuild task for invoking Yarn commands.
@@ -14,10 +14,12 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <BuildNumber Condition="'$(APPVEYOR_BUILD_NUMBER)' != ''">$([System.Int32]::Parse('$(APPVEYOR_BUILD_NUMBER)').ToString('D5'))</BuildNumber>
     <VersionSuffix Condition="'$(VersionSuffix)' != '' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
     <VersionSuffix Condition="'$(APPVEYOR_REPO_TAG)' == 'true'"></VersionSuffix>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts</PackageOutputPath>
     <Copyright>Copyright Nate McMaster</Copyright>
     <Authors>Nate McMaster</Authors>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5</TargetFrameworks>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -32,9 +34,9 @@ This package also provides an MSBuild task for invoking Yarn commands.
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.1012" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.1012" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +54,7 @@ This package also provides an MSBuild task for invoking Yarn commands.
   </Target>
 
   <Target Name="EnsureDistFiles" BeforeTargets="GenerateNuspec">
-    <Error Text="Could not find files in dist/ to include in the package" Condition="'@(YarnDist->Count())' == 0" />
+    <Error Text="Could not find files in dist/ to include in the package"
+           Condition="'@(YarnDist-&gt;Count())' == 0" />
   </Target>
 </Project>

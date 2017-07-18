@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using FluentAssertions;
 using Xunit;
+using Xunit.Abstractions;
 using Yarn.MSBuild.Tests.Utilities;
 
 namespace Yarn.MSBuild.Tests
@@ -9,16 +10,18 @@ namespace Yarn.MSBuild.Tests
     public class YarnTaskTests
     {
         private readonly TestProjectManager _projManager;
+        private readonly ITestOutputHelper _output;
 
-        public YarnTaskTests(TestProjectManager projManager)
+        public YarnTaskTests(TestProjectManager projManager, ITestOutputHelper output)
         {
             _projManager = projManager;
+            _output = output;
         }
 
         [Fact]
         public void InstallsOnBuild()
         {
-            var proj = _projManager.Create("WebSdkProj");
+            var proj = _projManager.Create("WebSdkProj", _output);
             proj.Restore().Should().Pass();
             proj.Root.Should().NotHaveFile("yarn.lock");
             proj.Build().Should().Pass();
@@ -29,7 +32,7 @@ namespace Yarn.MSBuild.Tests
         [Fact]
         public void ShouldRunOnMultiTfmProjects()
         {
-            var proj = _projManager.Create("MultiTfmWebApp");
+            var proj = _projManager.Create("MultiTfmWebApp", _output);
             proj.Restore().Should().Pass();
 
             proj.Root.Should().NotHaveFile("yarn.lock");
@@ -60,7 +63,7 @@ namespace Yarn.MSBuild.Tests
         [Fact]
         public void RunsOtherYarnCommands()
         {
-            var proj = _projManager.Create("YarnCommands");
+            var proj = _projManager.Create("YarnCommands", _output);
             proj.Restore().Should().Pass();
             proj.Root.Should().NotHaveFile("testran.txt");
             proj.Msbuild("/t:RunYarnTest").Should().Pass();

@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.DotNet.Cli.Utils;
+using Xunit.Abstractions;
 
 namespace Yarn.MSBuild.Tests.Utilities
 {
     public class TempProj : TempDir
     {
         private readonly IReadOnlyDictionary<string, string> _env;
+        private readonly ITestOutputHelper _output;
         private bool _cleanup;
 
-        public TempProj(IReadOnlyDictionary<string, string> env, string root)
+        public TempProj(IReadOnlyDictionary<string, string> env, string root, ITestOutputHelper output)
          : base(root)
         {
             _env = env;
+            _output = output;
         }
 
         public CommandResult Restore()
@@ -42,6 +45,8 @@ namespace Yarn.MSBuild.Tests.Utilities
             cmd
                 .CaptureStdErr()
                 .CaptureStdOut()
+                .OnOutputLine(l => _output.WriteLine(l))
+                .OnErrorLine(l => _output.WriteLine(l))
                 .WorkingDirectory(Root.FullName);
 
             foreach (var env in _env)
