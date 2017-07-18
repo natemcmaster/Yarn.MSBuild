@@ -33,6 +33,8 @@ namespace Yarn.MSBuild
             {
                 StartInfo = 
                 {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
                     FileName = settings.Item1,
                     Arguments = settings.Item2,
                     WorkingDirectory = dir,
