@@ -124,10 +124,10 @@ namespace Yarn.MSBuild
 
         private static bool IsWindows()
         {
-#if NET461
-            // This means the task is running on MSBuild.exe, with is only supported on Windows
-            return true;
-#elif NETSTANDARD1_6
+#if NET46
+            // This means the task is running on MSBuild.exe, which is usually only Windows.
+            return Type.GetType("Mono.Runtime", throwOnError: false) == null;
+#elif NETSTANDARD1_5
             return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 #else
 #error Target framework needs to be updated
