@@ -11,6 +11,11 @@ branches:
     - master
     - develop
     - appveyor
+
+# Workaround http://status.appveyor.com/incidents/m2vdvw39kdk8
+hosts:
+  api.nuget.org: 93.184.221.200
+
 artifacts:
   - path: 'artifacts\*.nupkg'
 cache:
