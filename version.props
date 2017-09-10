@@ -3,7 +3,7 @@
     <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
     <VersionPrefix>$(YarnVersion)</VersionPrefix>
     <VersionSuffix>build</VersionSuffix>
-    <PackageVersion Condition="'$(APPVEYOR_REPO_TAG)' == 'true' AND '$(VersionSuffix)' != ''">$(VersionPrefix)-$(VersionSuffix)</PackageVersion>
+    <PackageVersion Condition="'$(APPVEYOR_REPO_TAG)' == 'true'">$(VersionPrefix)</PackageVersion>
 
     <BuildNumber Condition=" '$(BuildNumber)' == '' ">$(APPVEYOR_BUILD_NUMBER)</BuildNumber>
     <BuildNumber Condition=" '$(BuildNumber)' == '' ">0</BuildNumber>
