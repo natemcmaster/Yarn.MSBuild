@@ -1,10 +1,15 @@
 Yarn.MSBuild
 ============
 
-[![Travis](https://img.shields.io/travis/natemcmaster/Yarn.MSBuild.svg?style=flat-square&label=travis)](https://travis-ci.org/natemcmaster/Yarn.MSBuild)
-[![AppVeyor](https://img.shields.io/appveyor/ci/natemcmaster/yarn-msbuild.svg?style=flat-square&label=appveyor)](https://ci.appveyor.com/project/natemcmaster/yarn-msbuild)
-[![NuGet](https://img.shields.io/nuget/v/Yarn.MSBuild.svg?style=flat-square)](https://nuget.org/packages/Yarn.MSBuild)
+[![Travis][travis-badge]](https://travis-ci.org/natemcmaster/Yarn.MSBuild)
+[![AppVeyor][appveyor-badge]](https://ci.appveyor.com/project/natemcmaster/yarn-msbuild)
+[![NuGet][nuget-badge]](https://nuget.org/packages/Yarn.MSBuild)
+[![MyGet][myget-badge]](https://www.myget.org/feed/natemcmaster/package/nuget/Yarn.MSBuild)
 
+[travis-badge]: https://img.shields.io/travis/natemcmaster/Yarn.MSBuild.svg?style=flat-square&label=travis
+[appveyor-badge]: https://img.shields.io/appveyor/ci/natemcmaster/yarn-msbuild.svg?style=flat-square&label=appveyor
+[nuget-badge]: https://img.shields.io/nuget/v/Yarn.MSBuild.svg?style=flat-square&label=nuget
+[myget-badge]: https://img.shields.io/www.myget/natemcmaster/vpre/Yarn.MSBuild.svg?style=flat-square&label=myget
 
 An MSBuild task for running the Yarn package manager.
 
@@ -25,7 +30,7 @@ dotnet add package Yarn.MSBuild
 **In csproj**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Yarn.MSBuild" Version="0.24.6" />
+  <PackageReference Include="Yarn.MSBuild" Version="1.0.0" />
 </ItemGroup>
 ```
 
@@ -38,11 +43,11 @@ This package is designed for use with ASP.NET Core projects.
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
-    <PackageReference Include="Yarn.MSBuild" Version="0.24.6" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.0.0" />
   </ItemGroup>
 </Project>
 ```
