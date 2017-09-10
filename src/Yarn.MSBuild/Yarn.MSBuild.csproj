@@ -12,7 +12,6 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5</TargetFrameworks>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <PackageTags>yarn;node;npm;msbuild;javascript;yarn.msbuild</PackageTags>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildThisFileDirectory)dist\**\*</DefaultItemExcludes>
