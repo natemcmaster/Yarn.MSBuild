@@ -32,7 +32,7 @@ proj_dir="$(pwd)/src/Yarn.MSBuild"
 dist_dir="$proj_dir/dist"
 yarn_archive="dist/yarn-v$yarn_version.tar.gz"
 if [ ! -f "$yarn_archive" ]; then
-    mkdir dist/
+    mkdir -p dist/
     __exec wget -O "$yarn_archive" https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz
 fi
 rm -r "$dist_dir" 2>/dev/null && :
