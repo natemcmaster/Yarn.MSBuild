@@ -2,8 +2,8 @@
   <PropertyGroup>
     <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
     <VersionPrefix>$(YarnVersion)</VersionPrefix>
-    <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' != 'master'">alpha</VersionSuffix>
-    <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' == 'master'">beta</VersionSuffix>
+    <VersionSuffix>build</VersionSuffix>
+    <PackageVersion Condition="'$(APPVEYOR_REPO_TAG)' == 'true' AND '$(VersionSuffix)' != ''">$(VersionPrefix)-$(VersionSuffix)</PackageVersion>
 
     <BuildNumber Condition=" '$(BuildNumber)' == '' ">$(APPVEYOR_BUILD_NUMBER)</BuildNumber>
     <BuildNumber Condition=" '$(BuildNumber)' == '' ">0</BuildNumber>
