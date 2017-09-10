@@ -10,7 +10,7 @@ RESET='\033[0m'
 __exec() {
     local cmd=$1
     shift
-    echo -e "${CYAN}> $cmd $@${RESET}"
+    echo -e "${CYAN}>>> $cmd $@${RESET}"
     set +e
     $cmd $@
     local exit_code=$?
@@ -21,35 +21,10 @@ __exec() {
     fi
 }
 
-_download() {
-    curl -sSL https://raw.githubusercontent.com/dotnet/cli/rel/1.0.1/scripts/obtain/dotnet-install.sh \
-        | bash -s -- -i $dir -v $version
-}
-
-ensure_dotnet() {
-    dir=$1
-    shift
-    version=$1
-    shift
-    export PATH="$dir:$PATH"
-    if ! which dotnet >/dev/null ; then
-        _download $dir $version
-    else
-        current_version="$(dotnet --version || echo '')"
-        if [[ "$current_version" != "$version" ]]; then
-            _download $dir $version
-        fi
-    fi
-}
-
 config='Release'
-
-dotnet_home="$HOME/.dotnet"
 artifacts="$(pwd)/artifacts"
 
 rm -r "$artifacts" 2>/dev/null && :
-ensure_dotnet $dotnet_home 1.0.4
-echo "dotnet = $(dotnet --version)"
 
 yarn_version=$(<yarn.version)
 export YarnVersion=$yarn_version

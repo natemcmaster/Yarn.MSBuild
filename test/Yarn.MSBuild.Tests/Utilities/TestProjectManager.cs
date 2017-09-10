@@ -27,7 +27,7 @@ namespace Yarn.MSBuild.Tests.Utilities
         private Dictionary<string, string> _envVariables
             = new Dictionary<string, string>();
 
-#if NETCOREAPP1_1
+#if NETCOREAPP2_0
         private static readonly string s_baseDir = AppContext.BaseDirectory;
 #elif NET461
         private static readonly string s_baseDir = AppDomain.CurrentDomain.BaseDirectory;

@@ -7,35 +7,19 @@ Automatically installs Node modules into web projects. This uses yarn, an altern
 
 This package also provides an MSBuild task for invoking Yarn commands.
     </Description>
-    <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
-    <VersionPrefix>$(YarnVersion)</VersionPrefix>
-    <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' != 'master'">alpha</VersionSuffix>
-    <VersionSuffix Condition="'$(APPVEYOR_REPO_BRANCH)' == 'master'">beta</VersionSuffix>
-    <BuildNumber Condition="'$(APPVEYOR_BUILD_NUMBER)' != ''">$([System.Int32]::Parse('$(APPVEYOR_BUILD_NUMBER)').ToString('D5'))</BuildNumber>
-    <VersionSuffix Condition="'$(VersionSuffix)' != '' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
-    <VersionSuffix Condition="'$(APPVEYOR_REPO_TAG)' == 'true'"></VersionSuffix>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts</PackageOutputPath>
-    <Copyright>Copyright Nate McMaster</Copyright>
-    <Authors>Nate McMaster</Authors>
     <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5</TargetFrameworks>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <PackageIconUrl>https://cdn.rawgit.com/yarnpkg/assets/master/yarn-kitten-circle.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/natemcmaster/Yarn.MSBuild</PackageProjectUrl>
-    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/natemcmaster/Yarn.MSBuild</RepositoryUrl>
-    <PackageReleaseNotes>https://github.com/yarnpkg/yarn/releases/tag/v$(YarnVersion)</PackageReleaseNotes>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
     <PackageTags>yarn;node;npm;msbuild;javascript;yarn.msbuild</PackageTags>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildThisFileDirectory)dist\**\*</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.1012" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" PrivateAssets="All" />
   </ItemGroup>
 

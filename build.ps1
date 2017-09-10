@@ -48,7 +48,7 @@ try {
     mkdir $dist_dir
     __exec ./7za.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
     __exec ./7za.exe x -y -ttar "-o$dist_dir" "${env:TEMP}/yarn-v$yarn_version.tar"
-    mv "$dist_dir/yarn-v$yarn_version/" $dist_dir
+    gci "$dist_dir/yarn-v$yarn_version/*" | mv $_ $dist_dir
 } finally {
     rm 7za.exe
 }

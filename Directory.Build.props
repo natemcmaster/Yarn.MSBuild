@@ -1,0 +1,16 @@
+<Project>
+  <Import Project="version.props" />
+
+  <PropertyGroup>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts\</PackageOutputPath>
+    <Copyright>Copyright Nate McMaster</Copyright>
+    <Authors>Nate McMaster</Authors>
+    <PackageIconUrl>https://cdn.rawgit.com/yarnpkg/assets/master/yarn-kitten-circle.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/natemcmaster/Yarn.MSBuild</PackageProjectUrl>
+    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/natemcmaster/Yarn.MSBuild</RepositoryUrl>
+    <PackageReleaseNotes>https://github.com/yarnpkg/yarn/releases/tag/v$(YarnVersion)</PackageReleaseNotes>
+    <GenerateFullPaths Condition="'$(VSCODE_PID)' != ''">true</GenerateFullPaths>
+  </PropertyGroup>
+</Project>

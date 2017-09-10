@@ -36,7 +36,7 @@ namespace Yarn.MSBuild.Tests.Utilities
         {
             Command cmd;
             string commandName;
-#if NETCOREAPP1_1
+#if NETCOREAPP2_0
             commandName = "dotnet msbuild";
             cmd = Command.CreateDotNet("msbuild", args);
 #elif NET461

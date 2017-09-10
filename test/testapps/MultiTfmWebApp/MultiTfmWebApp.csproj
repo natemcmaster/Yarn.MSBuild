@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.1;net46</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp1.1;netcoreapp1.0</TargetFrameworks>
-    <AspNetCoreVersion>1.1.1</AspNetCoreVersion>
-    <AspNetCoreVersion Condition="'$(TargetFramework)' == 'netcoreapp1.0'">1.0.4</AspNetCoreVersion>
+    <TargetFrameworks>netcoreapp2.0;net46</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp2.0;netcoreapp1.1</TargetFrameworks>
+    <AspNetCoreVersion>2.0.0</AspNetCoreVersion>
+    <AspNetCoreVersion Condition="'$(TargetFramework)' == 'netcoreapp1.1'">1.1.1</AspNetCoreVersion>
   </PropertyGroup>
 
   <ItemGroup>
