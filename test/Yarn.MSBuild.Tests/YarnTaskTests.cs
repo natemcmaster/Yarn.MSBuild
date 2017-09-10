@@ -48,10 +48,10 @@ namespace Yarn.MSBuild.Tests
 
 #if NETCOREAPP2_0
             var secondTfm = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                ? "net46"
+                ? "net461"
                 : "netcoreapp1.1";
 #elif NET461
-            var secondTfm = "net46";
+            var secondTfm = "net461";
 #else
 #error Target frameworks need updating
 #endif
