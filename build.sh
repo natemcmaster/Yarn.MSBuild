@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -o pipefail
+set -euo pipefail
 
 RED='\033[31m'
 CYAN='\033[36m'
@@ -55,17 +55,15 @@ yarn_version=$(<yarn.version)
 export YarnVersion=$yarn_version
 proj_dir="$(pwd)/src/Yarn.MSBuild"
 dist_dir="$proj_dir/dist"
-if [ -d $dist_dir ]; then
-    rm -r $dist_dir
-fi
-
 yarn_archive="dist/yarn-v$yarn_version.tar.gz"
-if [ ! -f $yarn_archive ]; then
+if [ ! -f "$yarn_archive" ]; then
     mkdir dist/
-    __exec wget -O $yarn_archive https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz
+    __exec wget -O "$yarn_archive" https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz
 fi
-rm -r $proj_dir/dist 2>/dev/null && :
-__exec tar -zx -C $proj_dir -f $yarn_archive
+rm -r "$dist_dir" 2>/dev/null && :
+mkdir -p "$dist_dir"
+__exec tar -zx -C "$dist_dir" -f "$yarn_archive"
+mv $dist_dir/yarn-v$yarn_version/* "$dist_dir/"
 
 __exec dotnet restore
 __exec dotnet build --configuration $config

@@ -11,20 +11,20 @@ branches:
     - master
     - develop
     - appveyor
-
-# Workaround http://status.appveyor.com/incidents/m2vdvw39kdk8
-hosts:
-  api.nuget.org: 93.184.221.200
-
 artifacts:
   - path: 'artifacts\*.nupkg'
 cache:
   - tools -> build.ps1
   - dist -> yarn.version
+artifacts:
+  - path: 'artifacts\*.nupkg'
+    name: Packages
+    type: NuGetPackages
 deploy:
   - provider: NuGet
-    skip_symbols: true
+    name: myget
+    artifact: Packages
+    server: https://www.myget.org/F/natemcmaster/api/v2/package
+    symbol_server: https://www.myget.org/F/natemcmaster/api/v2/package
     api_key:
-      secure: VFNEM1Py3Wavrd8I9eOWquMkcJnjgQzesKEFwd8+n0ZwbuDDbZexUaYJSQAzXND4
-    on:
-      appveyor_repo_tag: true
+      secure: KF1yGk4IHJyyfiHfFSCxJ+p5iZX+KPfCTnCihjD5iIZjasTS1lHeilpbaon4wvcM

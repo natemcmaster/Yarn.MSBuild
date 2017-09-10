@@ -28,10 +28,6 @@ echo "dotnet = $(dotnet --version)"
 
 $proj_dir = "$PSScriptRoot/src/Yarn.MSBuild"
 $dist_dir = "$proj_dir/dist"
-if (Test-Path $dist_dir) {
-    rm -r $dist_dir
-}
-
 $yarn_archive = "$PSScriptRoot/dist/yarn-v$yarn_version.tar.gz"
 if (!(Test-Path $yarn_archive)) {
     write-host -ForegroundColor Cyan "Downloading yarn-v$yarn_version.tar.gz"
@@ -48,8 +44,11 @@ if (!(Test-Path tools/7za.exe)) {
 
 cp tools/7za.exe ./
 try {
+    rm -recurse -force $dist_dir -ErrorAction Ignore
+    mkdir $dist_dir
     __exec ./7za.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
-    __exec ./7za.exe x -y -ttar "-o$proj_dir" "${env:TEMP}/yarn-v$yarn_version.tar"
+    __exec ./7za.exe x -y -ttar "-o$dist_dir" "${env:TEMP}/yarn-v$yarn_version.tar"
+    mv "$dist_dir/yarn-v$yarn_version/" $dist_dir
 } finally {
     rm 7za.exe
 }

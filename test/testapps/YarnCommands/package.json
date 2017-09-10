@@ -1,5 +1,8 @@
 {
-    "scripts": {
-        "test": "node stubtests.js"
-    }
+  "scripts": {
+    "test": "node stubtests.js"
+  },
+  "dependencies": {
+    "leftpad": "0.0.1"
+  }
 }
