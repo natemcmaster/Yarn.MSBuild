@@ -1,16 +1,15 @@
 <Project>
   <PropertyGroup>
     <!-- set to 'false' in your csproj to prevent yarn from running on 'Build' -->
-    <SuppressAutoYarn>false</SuppressAutoYarn>
+    <SuppressAutoYarn Condition=" '$(SuppressAutoYarn)' != '' ">false</SuppressAutoYarn>
     <!-- the default yarn command to run on build -->
-    <YarnBuildCommand>install</YarnBuildCommand>
+    <YarnBuildCommand Condition=" '$(YarnBuildCommand)' != '' ">install</YarnBuildCommand>
     <!-- set in your project to override location of yarn file-->
-    <YarnDir>$(MSBuildProjectDirectory)</YarnDir>
-  </PropertyGroup>
-
-  <PropertyGroup>
+    <YarnDir Condition=" '$(YarnDir)' != '' ">$(MSBuildProjectDirectory)</YarnDir>
+    
     <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">..\tools\netstandard1.5\Yarn.MSBuild.dll</_YarnTaskAssembly>
     <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">..\tools\net46\Yarn.MSBuild.dll</_YarnTaskAssembly>
+
     <_YarnExecutable>$(MSBuildThisFileDirectory)..\dist\bin\yarn</_YarnExecutable>
     <_YarnExecutable Condition="'$(OS)' == 'Windows_NT'">$(_YarnExecutable).cmd</_YarnExecutable>
   </PropertyGroup>

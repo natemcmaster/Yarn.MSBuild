@@ -12,15 +12,32 @@ using MSBuildTask = Microsoft.Build.Utilities.Task;
 
 namespace Yarn.MSBuild
 {
+    /// <summary>
+    /// A task for invoking the bundled version of yarn
+    /// </summary>
     public class Yarn : MSBuildTask
     {
         private const string YarnExeName = "yarn";
 
+        /// <summary>
+        /// Command line arguments to be passed to yarn
+        /// </summary>
         public string Command { get; set; }
 
+        /// <summary>
+        /// The current working directory for the yarn process
+        /// </summary>
         public string WorkingDirectory { get; set; }
 
+        /// <summary>
+        /// Override the path to the yarn executable. When empty, the task binds the version bundled in with this task.
+        /// </summary>
         public string ExecutablePath { get; set; }
+
+        /// <summary>
+        /// The path to the nodejs executable. If not specified, this task will expect node to be in PATH.
+        /// </summary>
+        public string NodeJsExecutablePath { get; set; }
 
         public override bool Execute()
         {
@@ -32,22 +49,40 @@ namespace Yarn.MSBuild
 
             var settings = GetYarnExe();
 
+            var path = Environment.GetEnvironmentVariable("PATH");
+
+            if (!string.IsNullOrEmpty(NodeJsExecutablePath))
+            {
+                if (!Path.IsPathRooted(NodeJsExecutablePath))
+                {
+                    Log.LogWarning(nameof(NodeJsExecutablePath) + " is not an absolute path, so its value is being ignored. Pass in an absolute path to nodejs instead.");
+                }
+                else
+                {
+                    var nodeDir = Path.GetDirectoryName(NodeJsExecutablePath);
+                    // prepend the node directory so it is found first in the system lookup for nodejs
+                    path = nodeDir + Path.PathSeparator + path;
+                    Log.LogMessage(MessageImportance.Low, "Adding {0} to the system PATH", nodeDir);
+                }
+            }
+
             var process = new Process
             {
-                StartInfo = 
+                StartInfo =
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,
                     FileName = settings.Item1,
                     Arguments = settings.Item2,
                     WorkingDirectory = dir,
+                    Environment =
+                    {
+                        ["PATH"] = path,
+                    }
                 }
             };
 
-            var displayArgs = !string.IsNullOrEmpty(Command)
-                ? " " + Command
-                : null;
-            Log.LogMessage(MessageImportance.High, "Executing 'yarn{0}'", displayArgs);
+            Log.LogMessage(MessageImportance.Normal, "Executing {0} {1} in {1} with PATH = {3}", process.StartInfo.FileName, process.StartInfo.Arguments, process.StartInfo.WorkingDirectory, path);
 
             try
             {
@@ -60,7 +95,13 @@ namespace Yarn.MSBuild
             }
 
             process.WaitForExit();
-            return process.ExitCode == 0;
+            var success = process.ExitCode == 0;
+            var displayArgs = !string.IsNullOrEmpty(Command)
+                ? " " + Command
+                : null;
+            Log.LogMessage(MessageImportance.High, "'yarn{0}' [{1}] -> {2}", displayArgs, process.StartInfo.WorkingDirectory, success ? "passed" : "failed");
+
+            return success;
         }
 
         private string GetCwd()
