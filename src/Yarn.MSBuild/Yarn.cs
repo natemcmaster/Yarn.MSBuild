@@ -70,7 +70,11 @@ namespace Yarn.MSBuild
                 }
                 else
                 {
-                    var nodeDir = Path.GetDirectoryName(NodeJsExecutablePath);
+                    // First check if this path is a directory. If not, assume it was a filepath and get the directory containing it
+                    var nodeDir = Directory.Exists(NodeJsExecutablePath)
+                            ? NodeJsExecutablePath
+                            : Path.GetDirectoryName(NodeJsExecutablePath);
+
                     // prepend the node directory so it is found first in the system lookup for nodejs
                     path = nodeDir + Path.PathSeparator + path;
                     Log.LogMessage(MessageImportance.Low, "Adding {0} to the system PATH", nodeDir);
@@ -111,9 +115,15 @@ namespace Yarn.MSBuild
             }
 
             process.WaitForExit();
-            var success = process.ExitCode == 0;
+            var success = process.ExitCode == 0 || IgnoreExitCode;
             ExitCode = process.ExitCode;
-            return success || IgnoreExitCode;
+
+            if (!success)
+            {
+                Log.LogError("yarn{0} returned non-zero code {1}", displayArgs, ExitCode);
+            }
+
+            return success;
         }
 
         private string GetCwd()
