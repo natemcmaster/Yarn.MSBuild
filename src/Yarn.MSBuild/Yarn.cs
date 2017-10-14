@@ -39,6 +39,17 @@ namespace Yarn.MSBuild
         /// </summary>
         public string NodeJsExecutablePath { get; set; }
 
+        /// <summary>
+        /// Ignore the exit code of yarn.
+        /// </summary>
+        public bool IgnoreExitCode { get; set; }
+
+        /// <summary>
+        /// The exit code of the process.
+        /// </summary>
+        [Output]
+        public int ExitCode { get; set; }
+
         public override bool Execute()
         {
             var dir = GetCwd();
@@ -82,7 +93,12 @@ namespace Yarn.MSBuild
                 }
             };
 
-            Log.LogMessage(MessageImportance.Normal, "Executing {0} {1} in {1} with PATH = {3}", process.StartInfo.FileName, process.StartInfo.Arguments, process.StartInfo.WorkingDirectory, path);
+            Log.LogMessage(MessageImportance.Low, process.StartInfo.FileName + " " + process.StartInfo.Arguments);
+
+            var displayArgs = !string.IsNullOrEmpty(Command)
+                ? " " + Command
+                : null;
+            Log.LogCommandLine("yarn" + displayArgs);
 
             try
             {
@@ -96,12 +112,8 @@ namespace Yarn.MSBuild
 
             process.WaitForExit();
             var success = process.ExitCode == 0;
-            var displayArgs = !string.IsNullOrEmpty(Command)
-                ? " " + Command
-                : null;
-            Log.LogMessage(MessageImportance.High, "'yarn{0}' [{1}] -> {2}", displayArgs, process.StartInfo.WorkingDirectory, success ? "passed" : "failed");
-
-            return success;
+            ExitCode = process.ExitCode;
+            return success || IgnoreExitCode;
         }
 
         private string GetCwd()

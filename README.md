@@ -98,6 +98,15 @@ string NodeJsExecutablePath   Where to find node(js) (*nix) or node.cmd (Windows
 
 [Optional]
 string WorkingDirectory       The directory in which to execute the yarn command
+
+[Optional]
+bool IgnoreExitCode           Don't create and error if the exit code is non-zero
+```
+
+Task outputs:
+```
+[Output]
+int ExitCode                  Returns the exit code of the yarn process
 ```
 
 ```xml
