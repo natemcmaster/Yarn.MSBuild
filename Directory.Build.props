@@ -5,6 +5,7 @@
     <Authors>Nate McMaster</Authors>
     <Copyright>Copyright © Nate McMaster</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts\</PackageOutputPath>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageIconUrl>https://cdn.rawgit.com/yarnpkg/assets/master/yarn-kitten-circle.png</PackageIconUrl>
@@ -12,14 +13,8 @@
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/natemcmaster/Yarn.MSBuild</RepositoryUrl>
-    <PackageReleaseNotes>https://github.com/yarnpkg/yarn/releases/tag/v$(YarnVersion)</PackageReleaseNotes>
     <GenerateFullPaths Condition="'$(VSCODE_PID)' != ''">true</GenerateFullPaths>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-
-  <PropertyGroup Condition="$(BuildingInsideVisualStudio) == 'true'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts\</PackageOutputPath>
-  </PropertyGroup>
-
+  
 </Project>

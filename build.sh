@@ -41,5 +41,5 @@ __exec tar -zx -C "$dist_dir" -f "$yarn_archive"
 mv $dist_dir/yarn-v$yarn_version/* "$dist_dir/"
 
 __exec dotnet restore
-__exec dotnet build --configuration $config
-__exec dotnet test --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
+__exec dotnet build --no-restore --configuration $config
+__exec dotnet test --no-restore --no-build --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj

@@ -54,5 +54,5 @@ try {
 }
 
 __exec dotnet restore
-__exec dotnet build --configuration $config
-__exec dotnet test --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
+__exec dotnet build --no-restore --configuration $config
+__exec dotnet test --no-build --no-restore --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
