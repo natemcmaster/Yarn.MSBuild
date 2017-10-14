@@ -75,7 +75,10 @@ Running `dotnet build` or `msbuild.exe /t:Build` will automatically invoke `yarn
   <YarnBuildCommand>run build</YarnBuildCommand>
 
   <!-- Change the directory in which yarn is invoked on build. Defaults to '$(MSBuildProjectDirectory)'. -->
-  <YarnDir>wwwroot/</YarnDir>
+  <YarnDir>$(MSBuildProjectDirectory)/wwwroot/</YarnDir>
+
+  <!-- Specify the default path to NodeJS. -->
+  <NodeJSExecutablePath>/opt/nodejs/bin/node</NodeJSExecutablePath>
 </PropertyGroup>
 ```
 
@@ -84,13 +87,17 @@ Running `dotnet build` or `msbuild.exe /t:Build` will automatically invoke `yarn
 The `Yarn` task supports the following parameters
 ```
 [Optional]
-string Command             The arguments to pass to yarn.
+string Command                The arguments to pass to yarn.
 
 [Optional]
-string ExecutablePath      Where to find yarn (*nix) or yarn.cmd (Windows)
+string ExecutablePath         Where to find yarn (*nix) or yarn.cmd (Windows)
 
 [Optional]
-string WorkingDirectory    The directory in which to execute the yarn command
+string NodeJsExecutablePath   Where to find node(js) (*nix) or node.cmd (Windows). 
+                              If not provided, node is expected to be in the PATH environment variable.
+
+[Optional]
+string WorkingDirectory       The directory in which to execute the yarn command
 ```
 
 ```xml

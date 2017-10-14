@@ -25,6 +25,8 @@ This package also provides an MSBuild task for invoking Yarn commands.
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="releasenotes.props" />
+    <None Include="build.targets" />
     <Content Include="build\**\*" PackagePath="%(Identity)" />
     <Content Include="buildMultiTargeting\**\*" PackagePath="%(Identity)" />
     <YarnDist Include="dist\**\*" PackagePath="%(Identity)" />

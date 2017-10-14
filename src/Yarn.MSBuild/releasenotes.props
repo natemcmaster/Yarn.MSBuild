@@ -1,12 +1,12 @@
 ﻿<Project>
   <PropertyGroup>
     <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.1.0'">
-      - Added an obsolete warning when YarnBuildCommand is empty.
-      - Upgrade the bundled version of yarn to 1.1.0
+- Added an obsolete warning when YarnBuildCommand is empty.
+- Upgrade the bundled version of yarn to 1.1.0
     </PackageReleaseNotes>
     <PackageReleaseNotes>
-      $(PackageReleaseNotes)
-      - For more details on changes to yarn itself, see https://github.com/yarnpkg/yarn/releases/tag/v$(YarnVersion)
+$(PackageReleaseNotes)
+- For more details on changes to yarn itself, see https://github.com/yarnpkg/yarn/releases/tag/v$(YarnVersion)
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>
