@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="releasenotes.props" />
+  
   <PropertyGroup>
     <Description>MSBuild integration for the Yarn package manager.
 
@@ -15,6 +16,7 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <PackageTags>yarn;node;npm;msbuild;javascript;yarn.msbuild</PackageTags>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildThisFileDirectory)dist\**\*</DefaultItemExcludes>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,14 +32,5 @@ This package also provides an MSBuild task for invoking Yarn commands.
     <Content Include="third_party_notice.txt" PackagePath="/" />
   </ItemGroup>
 
-  <Target Name="UpdateBuildDetails" BeforeTargets="Build" Condition="'$(APPVEYOR)' == 'true'">
-    <Exec Command="appveyor UpdateBuild -Version $(Version)"
-          IgnoreExitCode="true"
-          IgnoreStandardErrorWarningFormat="true" />
-  </Target>
-
-  <Target Name="EnsureDistFiles" BeforeTargets="GenerateNuspec">
-    <Error Text="Could not find files in dist/ to include in the package"
-           Condition="'@(YarnDist-&gt;Count())' == 0" />
-  </Target>
+  <Import Project="build.targets" />
 </Project>

@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.DotNet.Cli.Utils;
 using Xunit.Abstractions;
@@ -24,10 +23,10 @@ namespace Yarn.MSBuild.Tests.Utilities
         }
 
         public CommandResult Restore()
-            => RunCommand("/t:Restore");
+            => RunCommand("-t:Restore");
 
         public CommandResult Build(params string[] args)
-            => RunCommand(new[] { "/t:Build" }.Concat(args).ToArray());
+            => RunCommand(new[] { "-t:Build" }.Concat(args).ToArray());
 
         public CommandResult Msbuild(params string[] args)
             => RunCommand(args);

@@ -1,23 +1,37 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.0
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 15.0.26228.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{197F3D43-5077-473A-ADF8-EEB8BF10AD65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarn.MSBuild", "src\Yarn.MSBuild\Yarn.MSBuild.csproj", "{F5E8B269-BACD-4026-9E07-C7A69321C8F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yarn.MSBuild", "src\Yarn.MSBuild\Yarn.MSBuild.csproj", "{F5E8B269-BACD-4026-9E07-C7A69321C8F2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2C7D3672-1B75-499B-A714-C12C8B5D649D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarn.MSBuild.Tests", "test\Yarn.MSBuild.Tests\Yarn.MSBuild.Tests.csproj", "{ADAAECBD-197B-4C14-8A57-C266D4B491DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yarn.MSBuild.Tests", "test\Yarn.MSBuild.Tests\Yarn.MSBuild.Tests.csproj", "{ADAAECBD-197B-4C14-8A57-C266D4B491DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{33C50A57-F5B9-4737-A24B-41A6C64C9494}"
+	ProjectSection(SolutionItems) = preProject
+		.appveyor.yml = .appveyor.yml
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		Directory.Build.props = Directory.Build.props
+		global.json = global.json
+		LICENSE.txt = LICENSE.txt
+		NuGet.config = NuGet.config
+		README.md = README.md
+		version.props = version.props
+		yarn.version = yarn.version
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F5E8B269-BACD-4026-9E07-C7A69321C8F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -29,8 +43,14 @@ Global
 		{ADAAECBD-197B-4C14-8A57-C266D4B491DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADAAECBD-197B-4C14-8A57-C266D4B491DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F5E8B269-BACD-4026-9E07-C7A69321C8F2} = {197F3D43-5077-473A-ADF8-EEB8BF10AD65}
 		{ADAAECBD-197B-4C14-8A57-C266D4B491DB} = {2C7D3672-1B75-499B-A714-C12C8B5D649D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A354ADAD-CB56-481C-9C37-606B6EAE4451}
 	EndGlobalSection
 EndGlobal

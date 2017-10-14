@@ -5,6 +5,7 @@
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netcoreapp2.0;netcoreapp1.1</TargetFrameworks>
     <AspNetCoreVersion>2.0.0</AspNetCoreVersion>
     <AspNetCoreVersion Condition="'$(TargetFramework)' == 'netcoreapp1.1'">1.1.1</AspNetCoreVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

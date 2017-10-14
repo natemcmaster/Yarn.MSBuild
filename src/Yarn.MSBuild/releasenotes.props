@@ -1,0 +1,8 @@
+﻿<Project>
+  <PropertyGroup>
+    <PackageReleaseNotes Condition="$(PackageVersion.StartsWith('1.1.0'))">
+      - Added an obsolete warning when YarnBuildCommand is empty.
+      - Upgrade the bundled version of yarn to 1.1.0
+    </PackageReleaseNotes>
+  </PropertyGroup>
+</Project>

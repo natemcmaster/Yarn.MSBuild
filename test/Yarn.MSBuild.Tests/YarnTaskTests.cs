@@ -43,7 +43,7 @@ namespace Yarn.MSBuild.Tests
             proj.Root.Should().HaveFile("yarn.lock");
 
             proj.Root.GetFile("yarn.lock").Delete();
-            proj.Build("/p:TargetFramework=netcoreapp2.0").Should().Pass();
+            proj.Build("-p:TargetFramework=netcoreapp2.0").Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
 
 #if NETCOREAPP2_0
@@ -57,7 +57,7 @@ namespace Yarn.MSBuild.Tests
 #endif
 
             proj.Root.GetFile("yarn.lock").Delete();
-            proj.Build($"/p:TargetFramework={secondTfm}").Should().Pass();
+            proj.Build($"-p:TargetFramework={secondTfm}").Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
 
             proj.Done();
@@ -69,7 +69,7 @@ namespace Yarn.MSBuild.Tests
             var proj = _projManager.Create("YarnCommands", _output);
             proj.Restore().Should().Pass();
             proj.Root.Should().NotHaveFile("testran.txt");
-            proj.Msbuild("/t:RunYarnTest").Should().Pass();
+            proj.Msbuild("-t:RunYarnTest").Should().Pass();
             proj.Root.Should().HaveFile("testran.txt");
             proj.Done();
         }

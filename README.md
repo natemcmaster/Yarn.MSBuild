@@ -30,7 +30,7 @@ dotnet add package Yarn.MSBuild
 **In csproj**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Yarn.MSBuild" Version="1.0.0" />
+  <PackageReference Include="Yarn.MSBuild" Version="1.1.0" />
 </ItemGroup>
 ```
 
@@ -47,7 +47,7 @@ This package is designed for use with ASP.NET Core projects.
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.0.0" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.1.0" />
   </ItemGroup>
 </Project>
 ```
