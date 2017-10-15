@@ -30,61 +30,92 @@ dotnet add package Yarn.MSBuild
 **In csproj**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Yarn.MSBuild" Version="1.0.1" />
+  <PackageReference Include="Yarn.MSBuild" Version="1.1.0" />
 </ItemGroup>
 ```
 
 # Usage
 
-## Default usage
+This package installs yarn so you can use it from MSBuild without needing to install yarn globally.
 
-This package is designed for use with ASP.NET Core projects.
+### YarnBuildCommand
+
+If you set the `YarnBuildCommand` property, the command will run automatically in the "YarnBuild" target
+when you compile the application.
+
+Example:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <YarnBuildCommand>run webpack</YarnBuildCommand>
+    <YarnBuildCommand Condition="'$(Configuration)' == 'Release'">run webpack --env.prod</YarnBuildCommand>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.0.1" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.1.0" />
   </ItemGroup>
+
 </Project>
 ```
 
-Project layout:
-```
-+ WebApplication.csproj
-+ package.json
-+ Startup.cs
-- wwwroot
-   + app.js
-   + site.css
+```json
+{
+  "scripts": {
+    "webpack": "./node_modules/.bin/webpack"
+  },
+  "dependencies": {
+    "react": "^16.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^3.6.0"
+  }
+}
 ```
 
-Running `dotnet build` or `msbuild.exe /t:Build` will automatically invoke `yarn install`.
+You can also chain of this target to run additional commands.
+
+```xml
+  <Target Name="YarnInstall" BeforeTargets="YarnBuild">
+    <Yarn Command="install" Condition=" ! Exists('node_modules/')" />
+  </Target>
+```
+
+### Running yarn from a custom target
+
+This package makes the `Yarn` task available for execution from your targets.
+
+```xml
+<Project>
+  <Target Name="RunMyYarnCommands">
+    <!-- defaults to "install" in the current directory using the bundled version of yarn. -->
+    <Yarn />
+
+    <!-- Specify the command -->
+    <Yarn Command="run myscript" />
+
+    <!-- Allow failures -->
+    <Yarn Command="upgrade" IgnoreExitCode="true" />
+
+    <!-- Change the directory where yarn is executed -->
+    <Yarn Command="run test" WorkingDirectory="wwwroot/" />
+
+    <!-- Set where NodeJS is installed -->
+    <Yarn Command="run cmd" NodeJSExecutablePath="/opt/node8/bin/nodejs" />
+  </Target>
+</Project>
+```
 
 ### Additional options
 
-```xml
-<PropertyGroup>
-  <!-- Prevent yarn from running on 'Build'. Default to 'false'-->
-  <SuppressAutoYarn>true</SuppressAutoYarn>
-
-  <!-- Change the yarn that runs on 'Build'. Defaults to 'install'. -->
-  <YarnBuildCommand>run build</YarnBuildCommand>
-
-  <!-- Change the directory in which yarn is invoked on build. Defaults to '$(MSBuildProjectDirectory)'. -->
-  <YarnDir>$(MSBuildProjectDirectory)/wwwroot/</YarnDir>
-
-  <!-- Specify the default path to NodeJS. -->
-  <NodeJSExecutablePath>/opt/nodejs/bin/node</NodeJSExecutablePath>
-</PropertyGroup>
-```
-
-## Using the task
+Yarn inherits all properties available on [ToolTask](https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.utilities.tooltask)
+which allows further fine-tuning, such as controlling the logging-level of stderr and stdout and the
+process environment.
 
 The `Yarn` task supports the following parameters
+
 ```
 [Optional]
 string Command                The arguments to pass to yarn.
@@ -93,7 +124,7 @@ string Command                The arguments to pass to yarn.
 string ExecutablePath         Where to find yarn (*nix) or yarn.cmd (Windows)
 
 [Optional]
-string NodeJsExecutablePath   Where to find node(js) (*nix) or node.cmd (Windows). 
+string NodeJsExecutablePath   Where to find node(js) (*nix) or node.cmd (Windows).
                               If not provided, node is expected to be in the PATH environment variable.
 
 [Optional]
@@ -107,20 +138,6 @@ Task outputs:
 ```
 [Output]
 int ExitCode                  Returns the exit code of the yarn process
-```
-
-```xml
-<Project>
-  <Target Name="RunYarnCommands">
-    <!-- defaults to "install" in the current directory using the bundled version of yarn. -->
-    <Yarn />
-
-    <Yarn Command="upgrade" />
-
-    <Yarn Command="run test" WorkingDirectory="wwwroot/" />
-    <Yarn Command="run cmd" ExecutablePath="/usr/local/bin/yarn" />
-  </Target>
-</Project>
 ```
 
 # About

@@ -7,9 +7,25 @@
   </PropertyGroup>
 
   <Target Name="YarnBuild">
+
+    <PropertyGroup>
+      <YarnObsoleteMessage>
+Using Yarn.MSBuild without specifying YarnBuildCommand is obsolete and will be removed in a future version.
+You should specify the YarnBuildCommand property in your project.
+See https://github.com/natemcmaster/Yarn.MSBuild/issues/4 for details.
+      </YarnObsoleteMessage>
+    </PropertyGroup>
+
+    <Warning Code="YARN1001" Text="$(YarnObsoleteMessage.Trim())" Condition="'$(YarnBuildCommand)' == ''" />
+
+    <PropertyGroup>
+      <!-- the default yarn command to run on build -->
+      <YarnBuildCommand Condition="'$(YarnBuildCommand)' == ''">install</YarnBuildCommand>
+    </PropertyGroup>
+
     <Yarn Command="$(YarnBuildCommand)"
           WorkingDirectory="$(YarnDir)"
-          ExecutablePath="$(_YarnExecutable)"
+          ExecutablePath="$(YarnExecutablePath)"
           NodeJsExecutablePath="$(NodeJsExecutablePath)"
           Condition="'$(_YarnBuildWasRun)' != 'true'" />
 

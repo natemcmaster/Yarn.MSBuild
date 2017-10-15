@@ -5,14 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using NuGet.Versioning;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Yarn.MSBuild.Tests.Utilities
 {
-    [CollectionDefinition(TestProjectManager.Collection)]
+    [CollectionDefinition(TestProjectManager.Collection, DisableParallelization = true)]
     public class TestProjectCollection : ICollectionFixture<TestProjectManager>
     { }
 

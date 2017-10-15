@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.DotNet.Cli.Utils;
@@ -24,10 +25,10 @@ namespace Yarn.MSBuild.Tests.Utilities
         }
 
         public CommandResult Restore()
-            => RunCommand("/t:Restore");
+            => RunCommand("-t:Restore");
 
         public CommandResult Build(params string[] args)
-            => RunCommand(new[] { "/t:Build" }.Concat(args).ToArray());
+            => RunCommand(new[] { "-t:Build" }.Concat(args).ToArray());
 
         public CommandResult Msbuild(params string[] args)
             => RunCommand(args);
@@ -40,8 +41,8 @@ namespace Yarn.MSBuild.Tests.Utilities
             commandName = "dotnet msbuild";
             cmd = Command.CreateDotNet("msbuild", args);
 #elif NET461
-            commandName = "msbuild";
-            cmd = Command.Create("msbuild", args);
+            commandName = GetVisualStudioMsbuild();
+            cmd = Command.Create(commandName, args);
 #else
 #error Target frameworks need to be updated
 #endif
@@ -63,6 +64,14 @@ namespace Yarn.MSBuild.Tests.Utilities
 
         public void Done()
             => _cleanup = true;
+
+        private string GetVisualStudioMsbuild()
+        {
+            var msbuildInVs = Path.Combine(VisualStudioHelper.InstallationPath, "MSBuild", "15.0", "Bin", "msbuild.exe");
+            return File.Exists(msbuildInVs)
+                ? msbuildInVs
+                : "msbuild";
+        }
 
         public override void Dispose()
         {

@@ -1,0 +1,9 @@
+﻿<Project>
+  <Target Name="UpdateBuildDetails" BeforeTargets="PrepareForBuild" Condition="'$(APPVEYOR)' == 'true'">
+    <Exec Command="appveyor UpdateBuild -Version $(PackageVersion)" IgnoreExitCode="true" IgnoreStandardErrorWarningFormat="true" />
+  </Target>
+
+  <Target Name="EnsureDistFiles" BeforeTargets="GenerateNuspec">
+    <Error Text="Could not find files in dist/ to include in the package" Condition="'@(YarnDist-&gt;Count())' == 0" />
+  </Target>
+</Project>

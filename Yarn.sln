@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2C7D3672-1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yarn.MSBuild.Tests", "test\Yarn.MSBuild.Tests\Yarn.MSBuild.Tests.csproj", "{ADAAECBD-197B-4C14-8A57-C266D4B491DB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{7E3F4028-AB88-49A7-9388-F70CA78B9306}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{33C50A57-F5B9-4737-A24B-41A6C64C9494}"
 	ProjectSection(SolutionItems) = preProject
 		.appveyor.yml = .appveyor.yml
 		.editorconfig = .editorconfig
@@ -51,6 +51,6 @@ Global
 		{ADAAECBD-197B-4C14-8A57-C266D4B491DB} = {2C7D3672-1B75-499B-A714-C12C8B5D649D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {763FB7A5-F147-4AB6-892E-CE7D904F6B57}
+		SolutionGuid = {A354ADAD-CB56-481C-9C37-606B6EAE4451}
 	EndGlobalSection
 EndGlobal
