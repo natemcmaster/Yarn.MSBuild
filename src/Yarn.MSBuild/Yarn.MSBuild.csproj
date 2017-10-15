@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="releasenotes.props" />
-  
+
   <PropertyGroup>
     <Description>MSBuild integration for the Yarn package manager.
 

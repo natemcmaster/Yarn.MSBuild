@@ -38,8 +38,9 @@ dotnet add package Yarn.MSBuild
 
 This package installs yarn so you can use it from MSBuild without needing to install yarn globally.
 
-To invoke Yarn, you need to add a new target to your MSBuild project.
+### YarnBuildCommand
 
+If you set the `YarnBuildCommand` property, the command will run automatically when you compile the application.
 
 Example:
 
@@ -102,6 +103,10 @@ This package makes the `Yarn` task available for execution from your targets.
 
 ### Additional options
 
+Yarn inherits all properties available on [ToolTask](https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.utilities.tooltask)
+which allows further fine-tuning, such as controlling the logging-level of stderr and stdout and the
+process environment.
+
 The `Yarn` task supports the following parameters
 
 ```
@@ -112,7 +117,7 @@ string Command                The arguments to pass to yarn.
 string ExecutablePath         Where to find yarn (*nix) or yarn.cmd (Windows)
 
 [Optional]
-string NodeJsExecutablePath   Where to find node(js) (*nix) or node.cmd (Windows). 
+string NodeJsExecutablePath   Where to find node(js) (*nix) or node.cmd (Windows).
                               If not provided, node is expected to be in the PATH environment variable.
 
 [Optional]
@@ -127,7 +132,6 @@ Task outputs:
 [Output]
 int ExitCode                  Returns the exit code of the yarn process
 ```
-
 
 # About
 
