@@ -39,6 +39,17 @@ namespace Yarn.MSBuild
         /// </summary>
         public string NodeJsExecutablePath { get; set; }
 
+        /// <summary>
+        /// Ignore the exit code of yarn.
+        /// </summary>
+        public bool IgnoreExitCode { get; set; }
+
+        /// <summary>
+        /// The exit code of the process.
+        /// </summary>
+        [Output]
+        public int ExitCode { get; set; }
+
         public override bool Execute()
         {
             var dir = GetCwd();
@@ -59,7 +70,11 @@ namespace Yarn.MSBuild
                 }
                 else
                 {
-                    var nodeDir = Path.GetDirectoryName(NodeJsExecutablePath);
+                    // First check if this path is a directory. If not, assume it was a filepath and get the directory containing it
+                    var nodeDir = Directory.Exists(NodeJsExecutablePath)
+                            ? NodeJsExecutablePath
+                            : Path.GetDirectoryName(NodeJsExecutablePath);
+
                     // prepend the node directory so it is found first in the system lookup for nodejs
                     path = nodeDir + Path.PathSeparator + path;
                     Log.LogMessage(MessageImportance.Low, "Adding {0} to the system PATH", nodeDir);
@@ -82,7 +97,12 @@ namespace Yarn.MSBuild
                 }
             };
 
-            Log.LogMessage(MessageImportance.Normal, "Executing {0} {1} in {1} with PATH = {3}", process.StartInfo.FileName, process.StartInfo.Arguments, process.StartInfo.WorkingDirectory, path);
+            Log.LogMessage(MessageImportance.Low, process.StartInfo.FileName + " " + process.StartInfo.Arguments);
+
+            var displayArgs = !string.IsNullOrEmpty(Command)
+                ? " " + Command
+                : null;
+            Log.LogCommandLine("yarn" + displayArgs);
 
             try
             {
@@ -95,11 +115,13 @@ namespace Yarn.MSBuild
             }
 
             process.WaitForExit();
-            var success = process.ExitCode == 0;
-            var displayArgs = !string.IsNullOrEmpty(Command)
-                ? " " + Command
-                : null;
-            Log.LogMessage(MessageImportance.High, "'yarn{0}' [{1}] -> {2}", displayArgs, process.StartInfo.WorkingDirectory, success ? "passed" : "failed");
+            var success = process.ExitCode == 0 || IgnoreExitCode;
+            ExitCode = process.ExitCode;
+
+            if (!success)
+            {
+                Log.LogError("yarn{0} returned non-zero code {1}", displayArgs, ExitCode);
+            }
 
             return success;
         }
