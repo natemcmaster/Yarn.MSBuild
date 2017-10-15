@@ -2,20 +2,19 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
-using MSBuildTask = Microsoft.Build.Utilities.Task;
+using Microsoft.Build.Utilities;
 
 namespace Yarn.MSBuild
 {
     /// <summary>
     /// A task for invoking the bundled version of yarn
     /// </summary>
-    public class Yarn : MSBuildTask
+    public class Yarn : ToolTask
     {
         private const string YarnExeName = "yarn";
 
@@ -44,24 +43,70 @@ namespace Yarn.MSBuild
         /// </summary>
         public bool IgnoreExitCode { get; set; }
 
-        /// <summary>
-        /// The exit code of the process.
-        /// </summary>
-        [Output]
-        public int ExitCode { get; set; }
+        protected override string ToolName => YarnExeName;
 
-        public override bool Execute()
+        protected override string GenerateCommandLineCommands() => Command;
+
+        protected override ProcessStartInfo GetProcessStartInfo(string pathToTool, string commandLineCommands, string responseFileSwitch)
         {
-            var dir = GetCwd();
-            if (dir == null)
+            var startInfo = base.GetProcessStartInfo(pathToTool, commandLineCommands, responseFileSwitch);
+            startInfo.Environment["PATH"] = GetPath();
+            return startInfo;
+        }
+
+        protected override bool HandleTaskExecutionErrors()
+        {
+            return IgnoreExitCode
+                ? true
+                : base.HandleTaskExecutionErrors();
+        }
+
+        protected override string GetWorkingDirectory()
+        {
+            if (string.IsNullOrEmpty(WorkingDirectory))
             {
-                return false;
+                return Directory.GetCurrentDirectory();
             }
 
-            var settings = GetYarnExe();
+            if (!Directory.Exists(WorkingDirectory))
+            {
+                Log.LogError("WorkingDirectory does not exist: '{0}", WorkingDirectory);
+                return null;
+            }
 
+            return WorkingDirectory;
+        }
+
+        protected override string GenerateFullPathToTool()
+        {
+            if (string.IsNullOrEmpty(ExecutablePath))
+            {
+                var exe = FindBundledYarn();
+
+                if (!File.Exists(exe))
+                {
+                    Log.LogMessage("Failed to find the version of yarn bundled in this package. [{0}]", exe);
+                    return YarnExeName;
+                }
+
+                return exe;
+            }
+            else if (!File.Exists(ExecutablePath))
+            {
+                Log.LogWarning(
+                    "The file path set on ExecutablePath does not exist: '{0}'. " +
+                    "Falling back to using the system PATH.", ExecutablePath);
+                return YarnExeName;
+            }
+            else
+            {
+                return ExecutablePath;
+            }
+        }
+
+        private string GetPath()
+        {
             var path = Environment.GetEnvironmentVariable("PATH");
-
             if (!string.IsNullOrEmpty(NodeJsExecutablePath))
             {
                 if (!Path.IsPathRooted(NodeJsExecutablePath))
@@ -80,104 +125,7 @@ namespace Yarn.MSBuild
                     Log.LogMessage(MessageImportance.Low, "Adding {0} to the system PATH", nodeDir);
                 }
             }
-
-            var process = new Process
-            {
-                StartInfo =
-                {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    FileName = settings.Item1,
-                    Arguments = settings.Item2,
-                    WorkingDirectory = dir,
-                    Environment =
-                    {
-                        ["PATH"] = path,
-                    }
-                }
-            };
-
-            Log.LogMessage(MessageImportance.Low, process.StartInfo.FileName + " " + process.StartInfo.Arguments);
-
-            var displayArgs = !string.IsNullOrEmpty(Command)
-                ? " " + Command
-                : null;
-            Log.LogCommandLine("yarn" + displayArgs);
-
-            try
-            {
-                process.Start();
-            }
-            catch (Win32Exception)
-            {
-                Log.LogError($"Failed to start yarn from '{settings.Item1}'. You can override this by setting the {nameof(ExecutablePath)} property on the Yarn task.");
-                return false;
-            }
-
-            process.WaitForExit();
-            var success = process.ExitCode == 0 || IgnoreExitCode;
-            ExitCode = process.ExitCode;
-
-            if (!success)
-            {
-                Log.LogError("yarn{0} returned non-zero code {1}", displayArgs, ExitCode);
-            }
-
-            return success;
-        }
-
-        private string GetCwd()
-        {
-            if (string.IsNullOrEmpty(WorkingDirectory))
-            {
-                return Directory.GetCurrentDirectory();
-            }
-
-            if (!Directory.Exists(WorkingDirectory))
-            {
-                Log.LogError("WorkingDirectory does not exist: '{0}", WorkingDirectory);
-                return null;
-            }
-
-            return WorkingDirectory;
-        }
-
-        private Tuple<string, string> GetYarnExe()
-        {
-            string exe;
-            if (string.IsNullOrEmpty(ExecutablePath))
-            {
-                exe = FindBundledYarn();
-                if (!File.Exists(exe))
-                {
-                    Log.LogMessage("Failed to find the version of yarn bundled in this package. [{0}]", exe);
-                    exe = YarnExeName;
-                }
-            }
-            else if (!File.Exists(ExecutablePath))
-            {
-                Log.LogWarning(
-                    "The file path set on ExecutablePath does not exist: '{0}'. " +
-                    "Falling back to using the system PATH.", ExecutablePath);
-                exe = YarnExeName;
-            }
-            else
-            {
-                exe = ExecutablePath;
-            }
-
-            string args;
-            if (IsWindows())
-            {
-                args = $"/C \"{exe}\" {Command}";
-                exe = "cmd";
-            }
-            else
-            {
-                args = Command;
-            }
-
-            return Tuple.Create(exe, args);
+            return path;
         }
 
         private string FindBundledYarn()
@@ -187,7 +135,13 @@ namespace Yarn.MSBuild
                 .Directory // tfm
                 .Parent // tools
                 .Parent.FullName; // nuget package
-            return Path.Combine(nugetRoot, "dist/bin/yarn");
+
+            var yarn = Path.Combine(nugetRoot, "dist/bin/yarn");
+            if (IsWindows())
+            {
+                yarn += ".cmd";
+            }
+            return yarn;
         }
 
         private static bool IsWindows()
