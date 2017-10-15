@@ -40,7 +40,8 @@ This package installs yarn so you can use it from MSBuild without needing to ins
 
 ### YarnBuildCommand
 
-If you set the `YarnBuildCommand` property, the command will run automatically when you compile the application.
+If you set the `YarnBuildCommand` property, the command will run automatically in the "YarnBuild" target
+when you compile the application.
 
 Example:
 
@@ -49,19 +50,19 @@ Example:
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <YarnBuildCommand>run webpack</YarnBuildCommand>
+    <YarnBuildCommand Condition="'$(Configuration)' == 'Release'">run webpack --env.prod</YarnBuildCommand>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Yarn.MSBuild" Version="1.1.0" />
   </ItemGroup>
+
 </Project>
 ```
+
 ```json
 {
-  "version": "1.0.0",
-  "name": "myproject",
-  "private": true,
   "scripts": {
     "webpack": "./node_modules/.bin/webpack"
   },
@@ -69,14 +70,20 @@ Example:
     "react": "^16.0.0"
   },
   "devDependencies": {
-    "awesome-typescript-loader": "^3.2.3",
-    "typescript": "^2.5.3",
     "webpack": "^3.6.0"
   }
 }
 ```
 
-### Running yarn from a target
+You can also chain of this target to run additional commands.
+
+```xml
+  <Target Name="YarnInstall" BeforeTargets="YarnBuild">
+    <Yarn Command="install" Condition=" ! Exists('node_modules/')" />
+  </Target>
+```
+
+### Running yarn from a custom target
 
 This package makes the `Yarn` task available for execution from your targets.
 

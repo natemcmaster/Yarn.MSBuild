@@ -9,8 +9,9 @@
     <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">..\tools\netstandard1.5\Yarn.MSBuild.dll</_YarnTaskAssembly>
     <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">..\tools\net46\Yarn.MSBuild.dll</_YarnTaskAssembly>
 
-    <_YarnExecutable>$(MSBuildThisFileDirectory)..\dist\bin\yarn</_YarnExecutable>
-    <_YarnExecutable Condition="'$(OS)' == 'Windows_NT'">$(_YarnExecutable).cmd</_YarnExecutable>
+    <YarnExecutablePath>$(MSBuildThisFileDirectory)..\dist\bin\yarn</YarnExecutablePath>
+    <YarnExecutablePath>$([MSBuild]::NormalizePath($(YarnExecutablePath)))</YarnExecutablePath>
+    <YarnExecutablePath Condition="'$(OS)' == 'Windows_NT'">$(YarnExecutablePath).cmd</YarnExecutablePath>
   </PropertyGroup>
 
   <UsingTask AssemblyFile="$(_YarnTaskAssembly)" TaskName="Yarn.MSBuild.Yarn" />

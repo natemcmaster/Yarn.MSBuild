@@ -136,7 +136,7 @@ namespace Yarn.MSBuild
                 .Parent // tools
                 .Parent.FullName; // nuget package
 
-            var yarn = Path.Combine(nugetRoot, "dist/bin/yarn");
+            var yarn = Path.Combine(nugetRoot, "dist", "bin", "yarn");
             if (IsWindows())
             {
                 yarn += ".cmd";

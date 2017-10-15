@@ -25,7 +25,7 @@ See https://github.com/natemcmaster/Yarn.MSBuild/issues/4 for details.
 
     <Yarn Command="$(YarnBuildCommand)"
           WorkingDirectory="$(YarnDir)"
-          ExecutablePath="$(_YarnExecutable)"
+          ExecutablePath="$(YarnExecutablePath)"
           NodeJsExecutablePath="$(NodeJsExecutablePath)"
           Condition="'$(_YarnBuildWasRun)' != 'true'" />
 
