@@ -1,5 +1,8 @@
 ﻿<Project>
   <Target Name="SetPackageProperties" BeforeTargets="GenerateNuspec">
+    <!-- Create a dummy file when building on linux so the pack task passes. -->
+    <Touch Files="$(BaseOutputPath)\$(Configuration)\net46\Yarn.MSBuild.dll" AlwaysCreate="true" Condition="'$(OS)' != 'Windows_NT'" />
+
     <PropertyGroup>
       <NuspecProperties>
         $(NuspecProperties);
@@ -9,7 +12,7 @@
       </NuspecProperties>
     </PropertyGroup>
   </Target>
-  
+
   <Target Name="UpdateBuildDetails" BeforeTargets="PrepareForBuild" Condition="'$(APPVEYOR)' == 'true'">
     <Exec Command="appveyor UpdateBuild -Version $(PackageVersion)" IgnoreExitCode="true" IgnoreStandardErrorWarningFormat="true" />
   </Target>
