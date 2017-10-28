@@ -30,7 +30,7 @@ dotnet add package Yarn.MSBuild
 **In csproj**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Yarn.MSBuild" Version="1.2.0" />
+  <PackageReference Include="Yarn.MSBuild" Version="1.2.1" />
 </ItemGroup>
 ```
 
@@ -55,7 +55,7 @@ Example:
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.2.0" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.2.1" />
   </ItemGroup>
 
 </Project>
@@ -64,7 +64,7 @@ Example:
 ```json
 {
   "scripts": {
-    "webpack": "./node_modules/.bin/webpack"
+    "webpack": "webpack"
   },
   "dependencies": {
     "react": "^16.0.0"
@@ -100,7 +100,7 @@ For example, if you wanted to run `yarn run webpack` in `wwwroot/` instead:
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.2.0" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.2.1" />
   </ItemGroup>
 
 </Project>
