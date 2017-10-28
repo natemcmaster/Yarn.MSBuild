@@ -9,7 +9,7 @@
 - Upgrade the bundled version of yarn to 1.1.0
     </PackageReleaseNotes>
     <PackageReleaseNotes>
-Changes in $(PackageVersion): $(PackageReleaseNotes)
+Changes in $(VersionPrefix): $(PackageReleaseNotes)
 - For more details on changes to yarn itself, see https://github.com/yarnpkg/yarn/releases/tag/v$(YarnVersion)
     </PackageReleaseNotes>
     <PackageReleaseNotes>$(PackageReleaseNotes.Trim())</PackageReleaseNotes>

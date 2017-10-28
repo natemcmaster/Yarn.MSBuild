@@ -16,6 +16,12 @@ namespace Yarn.MSBuild
     /// </summary>
     public class Yarn : ToolTask
     {
+        public Yarn()
+        {
+            // yarn writes some output to stderr on Linux
+            LogStandardErrorAsError = false;
+        }
+
         private const string YarnExeName = "yarn";
 
         /// <summary>
