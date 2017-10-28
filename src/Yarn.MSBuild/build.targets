@@ -1,6 +1,7 @@
 ﻿<Project>
   <Target Name="SetPackageProperties" BeforeTargets="GenerateNuspec">
     <!-- Create a dummy file when building on linux so the pack task passes. -->
+    <MakeDir Directories="$(BaseOutputPath)\$(Configuration)\net46\" />
     <Touch Files="$(BaseOutputPath)\$(Configuration)\net46\Yarn.MSBuild.dll" AlwaysCreate="true" Condition="'$(OS)' != 'Windows_NT'" />
 
     <PropertyGroup>
