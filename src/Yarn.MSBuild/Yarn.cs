@@ -53,6 +53,11 @@ namespace Yarn.MSBuild
 
         protected override string GenerateCommandLineCommands() => Command;
 
+        // increase the default output importance from Low to Normal
+        protected override MessageImportance StandardOutputLoggingImportance { get; } = MessageImportance.Normal;
+
+        protected override MessageImportance StandardErrorLoggingImportance { get; } = MessageImportance.Normal;
+
         protected override ProcessStartInfo GetProcessStartInfo(string pathToTool, string commandLineCommands, string responseFileSwitch)
         {
             var startInfo = base.GetProcessStartInfo(pathToTool, commandLineCommands, responseFileSwitch);
