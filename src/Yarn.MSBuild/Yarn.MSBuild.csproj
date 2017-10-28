@@ -2,17 +2,11 @@
   <Import Project="releasenotes.props" />
 
   <PropertyGroup>
-    <Description>MSBuild integration for the Yarn package manager. Yarn is an alternative package manager to NPM.
-
-This package bundles Yarn so MSBuild projects can invoke yarn without needing to install it separately.
-    </Description>
+    <NuSpecFile>Yarn.MSBuild.nuspec</NuSpecFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5</TargetFrameworks>
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
     <NoPackageAnalysis>true</NoPackageAnalysis>
-    <PackageTags>yarn;node;npm;msbuild;javascript;yarn.msbuild</PackageTags>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildThisFileDirectory)dist\**\*</DefaultItemExcludes>
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
   </PropertyGroup>
@@ -25,11 +19,7 @@ This package bundles Yarn so MSBuild projects can invoke yarn without needing to
   <ItemGroup>
     <None Include="releasenotes.props" />
     <None Include="build.targets" />
-    <Content Include="build\**\*" PackagePath="%(Identity)" />
-    <Content Include="buildMultiTargeting\**\*" PackagePath="%(Identity)" />
-    <YarnDist Include="dist\**\*" PackagePath="%(Identity)" />
-    <Content Include="@(YarnDist)" />
-    <Content Include="third_party_notice.txt" PackagePath="/" />
+    <None Include="Yarn.MSBuild.nuspec" />
   </ItemGroup>
 
   <Import Project="build.targets" />

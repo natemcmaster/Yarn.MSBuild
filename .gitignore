@@ -11,4 +11,5 @@ node_modules/
 yarn.lock
 .yarnclean
 *.log
+*.binlog
 *.user
