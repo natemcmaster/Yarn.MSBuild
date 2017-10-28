@@ -6,6 +6,7 @@
     <AspNetCoreVersion>2.0.0</AspNetCoreVersion>
     <AspNetCoreVersion Condition="'$(TargetFramework)' == 'netcoreapp1.1'">1.1.1</AspNetCoreVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <YarnBuildCommand>install</YarnBuildCommand>
   </PropertyGroup>
 
   <ItemGroup>

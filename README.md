@@ -30,7 +30,7 @@ dotnet add package Yarn.MSBuild
 **In csproj**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Yarn.MSBuild" Version="1.1.0" />
+  <PackageReference Include="Yarn.MSBuild" Version="1.2.0" />
 </ItemGroup>
 ```
 
@@ -55,7 +55,7 @@ Example:
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.1.0" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.2.0" />
   </ItemGroup>
 
 </Project>
@@ -82,6 +82,30 @@ You can also chain of this target to run additional commands.
     <Yarn Command="install" Condition=" ! Exists('node_modules/')" />
   </Target>
 ```
+
+### Changing the directory where YarnBuild runs
+
+You can set the `YarnWorkingDir` property to change the folder in which `YarnBuildCommand` executes.
+
+For example, if you wanted to run `yarn run webpack` in `wwwroot/` instead:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <YarnWorkingDir>$(MSBuildProjectDirectory)/wwwroot/</YarnWorkingDir>
+    <YarnBuildCommand>run webpack</YarnBuildCommand>
+    <YarnBuildCommand Condition="'$(Configuration)' == 'Release'">run webpack --env.prod</YarnBuildCommand>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.2.0" />
+  </ItemGroup>
+
+</Project>
+```
+
 
 ### Running yarn from a custom target
 

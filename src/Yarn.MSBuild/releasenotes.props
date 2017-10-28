@@ -1,5 +1,9 @@
 ﻿<Project>
   <PropertyGroup>
+    <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.2.0'">
+- Breaking change: only run the 'YarnBuild' target when YarnBuildCommand is not empty. See https://github.com/natemcmaster/Yarn.MSBuild/issues/4 for details.
+- Upgrade the bundled version of yarn to 1.2.0
+    </PackageReleaseNotes>
     <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.1.0'">
 - Added an obsolete warning when YarnBuildCommand is empty. See https://github.com/natemcmaster/Yarn.MSBuild/issues/4 for details.
 - Upgrade the bundled version of yarn to 1.1.0

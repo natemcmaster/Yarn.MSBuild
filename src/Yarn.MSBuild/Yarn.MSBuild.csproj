@@ -2,11 +2,9 @@
   <Import Project="releasenotes.props" />
 
   <PropertyGroup>
-    <Description>MSBuild integration for the Yarn package manager.
+    <Description>MSBuild integration for the Yarn package manager. Yarn is an alternative package manager to NPM.
 
-Automatically installs Node modules into web projects. This uses yarn, an alternative package manager to NPM.
-
-This package also provides an MSBuild task for invoking Yarn commands.
+This package bundles Yarn so MSBuild projects can invoke yarn without needing to install it separately.
     </Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>

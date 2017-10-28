@@ -22,7 +22,7 @@ namespace Yarn.MSBuild.Tests
         }
 
         [Fact]
-        public void InstallsOnBuild()
+        public void RunsYarnBuildCommand()
         {
             var proj = _projManager.Create("WebSdkProj", _output);
             proj.Restore().Should().Pass();
