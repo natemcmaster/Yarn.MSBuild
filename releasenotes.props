@@ -1,5 +1,8 @@
 ﻿<Project>
   <PropertyGroup>
+    <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.3.2'">
+- Upgrade the bundled version of yarn to 1.3.2
+    </PackageReleaseNotes>
     <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.2.1'">
 - Minor tweak to make logging output more visible in build logs
 - Upgrade the bundled version of yarn to 1.2.1

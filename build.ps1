@@ -1,4 +1,4 @@
-#!/usr/bin/env powershell
+#!/usr/bin/env pwsh
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2

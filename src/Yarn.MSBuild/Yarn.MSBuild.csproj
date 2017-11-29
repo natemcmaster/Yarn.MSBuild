@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="releasenotes.props" />
+  <Import Project="../../releasenotes.props" />
 
   <PropertyGroup>
     <NuSpecFile>Yarn.MSBuild.nuspec</NuSpecFile>
