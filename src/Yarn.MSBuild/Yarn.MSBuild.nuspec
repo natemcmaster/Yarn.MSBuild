@@ -28,8 +28,6 @@ This package bundles Yarn so MSBuild projects can invoke yarn without needing to
     <file src="build\" target="build/" />
     <file src="buildMultiTargeting\" target="buildMultiTargeting/" />
     <!-- List at least these files to ensure that dist was extracted to the right place. pack will fail if they are missing-->
-    <file src="dist/bin/yarn.cmd" target="dist/bin/" />
-    <file src="dist/bin/yarn" target="dist/bin/" />
     <file src="dist\" target="dist/" />
     <file src="third_party_notice.txt" target="/" />
   </files>
