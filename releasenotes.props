@@ -1,5 +1,8 @@
 ﻿<Project>
   <PropertyGroup>
+    <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.3.3'">
+- Fixes a packaging bug when using paket clients
+    </PackageReleaseNotes>
     <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.3.2'">
 - Upgrade the bundled version of yarn to 1.3.2
     </PackageReleaseNotes>
