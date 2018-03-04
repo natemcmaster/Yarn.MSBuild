@@ -1,8 +1,7 @@
 <Project>
   <PropertyGroup>
     <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
-    <!-- <VersionPrefix>$(YarnVersion)</VersionPrefix> -->
-    <VersionPrefix>1.3.4</VersionPrefix>
+    <VersionPrefix>$(YarnVersion)</VersionPrefix>
     <VersionSuffix>build</VersionSuffix>
     <PackageVersion Condition="'$(APPVEYOR_REPO_TAG)' == 'true'">$(VersionPrefix)</PackageVersion>
 
@@ -12,6 +11,9 @@
     <VersionSuffix Condition=" '$(VersionSuffix)' != '' ">$(VersionSuffix).$(BuildNumber)</VersionSuffix>
 
     <BranchName Condition=" '$(BranchName)' == '' ">$(APPVEYOR_REPO_BRANCH)</BranchName>
-    <VersionSuffix Condition=" '$(VersionSuffix)' != '' AND '$(BranchName)' != '' ">$(VersionSuffix)+$(BranchName)</VersionSuffix>
+    <RepositoryCommit Condition=" '$(RepositoryCommit)' == '' ">$(APPVEYOR_REPO_COMMIT)</RepositoryCommit>
+
+    <VersionMetadata Condition="'$(RepositoryCommit)' != ''">sha.$(RepositoryCommit.Substring(0, 8))</VersionMetadata>
+    <VersionSuffix Condition=" '$(VersionSuffix)' != '' AND '$(VersionMetadata)' != '' ">$(VersionSuffix)+$(VersionMetadata)</VersionSuffix>
   </PropertyGroup>
 </Project>
