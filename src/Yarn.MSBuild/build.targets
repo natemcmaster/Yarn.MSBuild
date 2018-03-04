@@ -11,6 +11,10 @@
         releasenotes=$([MSBuild]::Escape($(PackageReleaseNotes)));
         output=$([MSBuild]::NormalizeDirectory('$(BaseOutputPath)\$(Configuration)'));
       </NuspecProperties>
+      <NuspecProperties Condition="'$(RepositoryCommit)' != ''">
+        $(NuspecProperties);
+        repositoryCommit=$(RepositoryCommit);
+      </NuspecProperties>
     </PropertyGroup>
   </Target>
 

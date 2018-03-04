@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Yarn.MSBuild</id>
@@ -20,12 +20,13 @@ This package bundles Yarn so MSBuild projects can invoke yarn without needing to
   <files>
     <!-- This placeholder file tells nuget that this package is compatible with basically anything. -->
     <file src="_._" target="lib/netstandard1.0/" />
-    <file src="_._" target="lib/net45/" />
+    <file src="_._" target="lib/net40/" />
 
     <file src="$output$netstandard1.5/Yarn.MSBuild.dll" target="tools/netstandard1.5/" />
     <file src="$output$net46/Yarn.MSBuild.dll" target="tools/net46/" />
 
-    <file src="build\" target="build/" />
+    <file src="sdk\" target="sdk/" />
+    <file src="targets\" target="build/" />
     <file src="buildMultiTargeting\" target="buildMultiTargeting/" />
     <file src="dist\" target="dist/" />
     <file src="third_party_notice.txt" target="/" />

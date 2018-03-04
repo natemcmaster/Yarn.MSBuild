@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
@@ -58,12 +59,27 @@ namespace Yarn.MSBuild
 
         protected override MessageImportance StandardErrorLoggingImportance { get; } = MessageImportance.Normal;
 
+#if NET46
+        public override bool Execute()
+        {
+            var pathVar = new[] { "PATH=" + GetPath() };
+            EnvironmentVariables = EnvironmentVariables == null
+                ? pathVar
+                : EnvironmentVariables.Concat(pathVar).ToArray();
+            return base.Execute();
+        }
+
+#elif NETSTANDARD1_5
         protected override ProcessStartInfo GetProcessStartInfo(string pathToTool, string commandLineCommands, string responseFileSwitch)
         {
             var startInfo = base.GetProcessStartInfo(pathToTool, commandLineCommands, responseFileSwitch);
             startInfo.Environment["PATH"] = GetPath();
             return startInfo;
         }
+
+#else
+#error Update target frameworks
+#endif
 
         protected override bool HandleTaskExecutionErrors()
         {

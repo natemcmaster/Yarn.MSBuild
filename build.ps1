@@ -2,8 +2,6 @@
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2
-# github requires TLS 1.2
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 function __exec($cmd) {
     write-host -ForegroundColor Cyan "> $cmd $args"
@@ -34,6 +32,8 @@ $yarn_archive = "$PSScriptRoot/dist/yarn-v$yarn_version.tar.gz"
 if (!(Test-Path $yarn_archive)) {
     write-host -ForegroundColor Cyan "Downloading yarn-v$yarn_version.tar.gz"
     mkdir dist/ -ErrorAction Ignore | Out-Null
+    # github requires TLS 1.2
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     iwr https://github.com/yarnpkg/yarn/releases/download/v$yarn_version/yarn-v$yarn_version.tar.gz -outfile $yarn_archive
 }
 
@@ -51,10 +51,16 @@ try {
     __exec ./7za.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
     __exec ./7za.exe x -y -ttar "-o$dist_dir" "${env:TEMP}/yarn-v$yarn_version.tar"
     gci "$dist_dir/yarn-v$yarn_version/*" | % { mv $_ $dist_dir }
-} finally {
+}
+finally {
     rm 7za.exe
 }
 
+$commit = ''
+if (Get-Command git) {
+    $commit = git rev-parse HEAD
+}
+
 __exec dotnet restore
-__exec dotnet build --no-restore --configuration $config
+__exec dotnet build --no-restore --configuration $config "-p:RepositoryCommit=$commit"
 __exec dotnet test --no-build --no-restore --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj

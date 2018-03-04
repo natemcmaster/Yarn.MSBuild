@@ -7,19 +7,20 @@
     <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5</TargetFrameworks>
     <NoPackageAnalysis>true</NoPackageAnalysis>
-    <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildThisFileDirectory)dist\**\*</DefaultItemExcludes>
-    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
     <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+  </ItemGroup>
+
   <ItemGroup>
-    <None Include="releasenotes.props" />
-    <None Include="build.targets" />
-    <None Include="Yarn.MSBuild.nuspec" />
+    <None Include="..\..\releasenotes.props" />
   </ItemGroup>
 
   <Import Project="build.targets" />

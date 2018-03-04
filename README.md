@@ -34,6 +34,21 @@ dotnet add package Yarn.MSBuild
 </ItemGroup>
 ```
 
+**Experimental -- nightly builds only**
+
+With Visual Studio 15.6 and .NET Core CLI 2.1.300, you can use this package as an "SDK" element.
+
+```xml
+<Project>
+  <Sdk Name="Microsoft.NET.Sdk.Web" />
+  <Sdk Name="Yarn.MSBuild" Version="1.5.1-build.104" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+</Project>
+```
+
 # Usage
 
 This package installs yarn so you can use it from MSBuild without needing to install yarn globally.
