@@ -2,6 +2,8 @@
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2
+# github requires TLS 1.2
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 function __exec($cmd) {
     write-host -ForegroundColor Cyan "> $cmd $args"
