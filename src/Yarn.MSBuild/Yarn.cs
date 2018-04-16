@@ -110,7 +110,8 @@ namespace Yarn.MSBuild
         {
             if (_executablePath == null)
             {
-                _executablePath = GetYarnPath();
+                var yarn = GetYarnPath();
+                _executablePath = Path.GetFullPath(yarn);
             }
 
             return _executablePath;
