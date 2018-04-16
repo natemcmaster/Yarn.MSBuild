@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "test": "node stubtests.js"
+    "test": "node stubtests.js",
+    "test1": "yarn run test2",
+    "test2": "node stubtests2.js"
   },
   "dependencies": {
     "leftpad": "0.0.1"

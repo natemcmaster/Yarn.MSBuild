@@ -17,6 +17,8 @@ namespace Yarn.MSBuild
     /// </summary>
     public class Yarn : ToolTask
     {
+        private string _executablePath;
+
         public Yarn()
         {
             // yarn writes some output to stderr on Linux
@@ -62,7 +64,7 @@ namespace Yarn.MSBuild
 #if NET46
         public override bool Execute()
         {
-            var pathVar = new[] { "PATH=" + GetPath() };
+            var pathVar = new[] { "PATH=" + GetEnvPath() };
             EnvironmentVariables = EnvironmentVariables == null
                 ? pathVar
                 : EnvironmentVariables.Concat(pathVar).ToArray();
@@ -73,7 +75,7 @@ namespace Yarn.MSBuild
         protected override ProcessStartInfo GetProcessStartInfo(string pathToTool, string commandLineCommands, string responseFileSwitch)
         {
             var startInfo = base.GetProcessStartInfo(pathToTool, commandLineCommands, responseFileSwitch);
-            startInfo.Environment["PATH"] = GetPath();
+            startInfo.Environment["PATH"] = GetEnvPath();
             return startInfo;
         }
 
@@ -106,6 +108,16 @@ namespace Yarn.MSBuild
 
         protected override string GenerateFullPathToTool()
         {
+            if (_executablePath == null)
+            {
+                _executablePath = GetYarnPath();
+            }
+
+            return _executablePath;
+        }
+
+        private string GetYarnPath()
+        {
             if (string.IsNullOrEmpty(ExecutablePath))
             {
                 var exe = FindBundledYarn();
@@ -131,7 +143,7 @@ namespace Yarn.MSBuild
             }
         }
 
-        private string GetPath()
+        private string GetEnvPath()
         {
             var path = Environment.GetEnvironmentVariable("PATH");
             if (!string.IsNullOrEmpty(NodeJsExecutablePath))
@@ -152,6 +164,11 @@ namespace Yarn.MSBuild
                     Log.LogMessage(MessageImportance.Low, "Adding {0} to the system PATH", nodeDir);
                 }
             }
+
+            var yarnDir = Path.GetDirectoryName(GenerateFullPathToTool());
+            Log.LogMessage(MessageImportance.Low, "Adding {0} to the system PATH", yarnDir);
+            path = yarnDir + Path.PathSeparator + path;
+
             return path;
         }
 

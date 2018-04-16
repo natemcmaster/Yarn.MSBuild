@@ -82,6 +82,8 @@ namespace Yarn.MSBuild.Tests
             proj.Root.Should().NotHaveFile("testran.txt");
             proj.Msbuild("-t:RunYarnTest").Should().Pass();
             proj.Root.Should().HaveFile("testran.txt");
+            proj.Msbuild("-t:RunYarnTest1").Should().Pass();
+            proj.Root.Should().HaveFile("testran2.txt");
             proj.Done();
         }
     }

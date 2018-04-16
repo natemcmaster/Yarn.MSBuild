@@ -11,4 +11,8 @@
     <Yarn Command="run test" />
   </Target>
 
+  <Target Name="RunYarnTest1">
+    <Yarn Command="run test1" />
+  </Target>
+
 </Project>
