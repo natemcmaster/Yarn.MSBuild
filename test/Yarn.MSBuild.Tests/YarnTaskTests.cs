@@ -22,6 +22,17 @@ namespace Yarn.MSBuild.Tests
         }
 
         [Fact]
+        public void RunsYarnInstalledAsAnSdkPackage()
+        {
+            var proj = _projManager.Create("SdkProj", _output);
+            proj.Restore().Should().Pass();
+            proj.Root.Should().NotHaveFile("yarn.lock");
+            proj.Build().Should().Pass();
+            proj.Root.Should().HaveFile("yarn.lock");
+            proj.Done();
+        }
+
+        [Fact]
         public void RunsYarnBuildCommand()
         {
             var proj = _projManager.Create("WebSdkProj", _output);

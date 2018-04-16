@@ -1,5 +1,8 @@
 ﻿<Project>
   <PropertyGroup>
+    <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.5.1'">
+- Add support for using this package as a 'SDK' package (requires Visual Studio 2017 15.6).
+    </PackageReleaseNotes>
     <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.3.4'">
 - Add support for using this package with Visual Studio 2015 and MSBuild 14. (Contributed by @gentoo90.)
     </PackageReleaseNotes>

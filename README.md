@@ -30,21 +30,21 @@ dotnet add package Yarn.MSBuild
 **In csproj**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Yarn.MSBuild" Version="1.3.4" />
+  <PackageReference Include="Yarn.MSBuild" Version="1.5.1" />
 </ItemGroup>
 ```
 
-**Experimental -- nightly builds only**
+With Visual Studio 15.6 and .NET Core CLI 2.1.104 or newer, you can use this package as an "SDK" element.
 
-With Visual Studio 15.6 and .NET Core CLI 2.1.300, you can use this package as an "SDK" element.
+See [Microsoft's documentation](https://docs.microsoft.com/en-us/visualstudio/msbuild/how-to-use-project-sdk) for details on project SDKs.
 
 ```xml
 <Project>
   <Sdk Name="Microsoft.NET.Sdk.Web" />
-  <Sdk Name="Yarn.MSBuild" Version="1.5.1-build.104" />
+  <Sdk Name="Yarn.MSBuild" Version="1.5.1" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 </Project>
 ```
@@ -70,7 +70,7 @@ Example:
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.3.4" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.5.1" />
   </ItemGroup>
 
 </Project>
@@ -115,7 +115,7 @@ For example, if you wanted to run `yarn run webpack` in `wwwroot/` instead:
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.3.4" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.5.1" />
   </ItemGroup>
 
 </Project>

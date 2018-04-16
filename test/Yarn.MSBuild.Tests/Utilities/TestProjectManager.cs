@@ -73,6 +73,10 @@ namespace Yarn.MSBuild.Tests.Utilities
                 .Select(f => NuGetVersion.Parse(f.Substring(packageId.Length + 1)))
                 .Single();
             _envVariables["TestPackageVersion"] = yarnVersion.ToNormalizedString();
+
+            File.WriteAllText(
+                Path.Combine(_workDir, "global.json"),
+                @"{""msbuild-sdks"": {""Yarn.MSBuild"": """ + yarnVersion + @"""}}");
         }
 
         public void Dispose()
