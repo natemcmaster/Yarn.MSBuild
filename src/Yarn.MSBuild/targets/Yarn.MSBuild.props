@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- set in your project to override location of yarn file-->
-    <YarnWorkingDir Condition=" '$(YarnWorkingDir)' != '' ">$(MSBuildProjectDirectory)</YarnWorkingDir>
+    <YarnWorkingDir Condition="'$(YarnWorkingDir)' == ''">$(MSBuildProjectDirectory)</YarnWorkingDir>
 
     <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">..\tools\netstandard1.5\Yarn.MSBuild.dll</_YarnTaskAssembly>
     <_YarnTaskAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">..\tools\net46\Yarn.MSBuild.dll</_YarnTaskAssembly>
