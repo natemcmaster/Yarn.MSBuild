@@ -2,6 +2,7 @@
   <PropertyGroup>
     <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
     <VersionPrefix>$(YarnVersion)</VersionPrefix>
+    <VersionPrefix>1.5.2</VersionPrefix>
     <VersionSuffix>build</VersionSuffix>
     <PackageVersion Condition="'$(APPVEYOR_REPO_TAG)' == 'true'">$(VersionPrefix)</PackageVersion>
 
