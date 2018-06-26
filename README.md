@@ -30,21 +30,21 @@ dotnet add package Yarn.MSBuild
 **In csproj**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Yarn.MSBuild" Version="1.6.0" />
+  <PackageReference Include="Yarn.MSBuild" Version="1.7.0" />
 </ItemGroup>
 ```
 
-With Visual Studio 15.6 and .NET Core CLI 2.1.104 or newer, you can use this package as an "SDK" element.
+With Visual Studio 15.6 and .NET Core SDK 2.1 or newer, you can use this package as an "SDK" element.
 
 See [Microsoft's documentation](https://docs.microsoft.com/en-us/visualstudio/msbuild/how-to-use-project-sdk) for details on project SDKs.
 
 ```xml
 <Project>
   <Sdk Name="Microsoft.NET.Sdk.Web" />
-  <Sdk Name="Yarn.MSBuild" Version="1.6.0" />
+  <Sdk Name="Yarn.MSBuild" Version="1.7.0" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 </Project>
 ```
@@ -63,14 +63,14 @@ Example:
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <YarnBuildCommand>run webpack</YarnBuildCommand>
     <YarnBuildCommand Condition="'$(Configuration)' == 'Release'">run webpack --env.prod</YarnBuildCommand>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.7.0" />
   </ItemGroup>
 
 </Project>
@@ -85,7 +85,7 @@ Example:
     "react": "^16.0.0"
   },
   "devDependencies": {
-    "webpack": "^3.6.0"
+    "webpack": "^4.0.0"
   }
 }
 ```
@@ -107,15 +107,15 @@ For example, if you wanted to run `yarn run webpack` in `wwwroot/` instead:
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <YarnWorkingDir>$(MSBuildProjectDirectory)/wwwroot/</YarnWorkingDir>
     <YarnBuildCommand>run webpack</YarnBuildCommand>
     <YarnBuildCommand Condition="'$(Configuration)' == 'Release'">run webpack --env.prod</YarnBuildCommand>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.7.0" />
   </ItemGroup>
 
 </Project>
