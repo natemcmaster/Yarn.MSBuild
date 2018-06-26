@@ -30,7 +30,7 @@ dotnet add package Yarn.MSBuild
 **In csproj**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Yarn.MSBuild" Version="1.5.1" />
+  <PackageReference Include="Yarn.MSBuild" Version="1.6.0" />
 </ItemGroup>
 ```
 
@@ -41,7 +41,7 @@ See [Microsoft's documentation](https://docs.microsoft.com/en-us/visualstudio/ms
 ```xml
 <Project>
   <Sdk Name="Microsoft.NET.Sdk.Web" />
-  <Sdk Name="Yarn.MSBuild" Version="1.5.1" />
+  <Sdk Name="Yarn.MSBuild" Version="1.6.0" />
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -70,7 +70,7 @@ Example:
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.5.1" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.6.0" />
   </ItemGroup>
 
 </Project>
@@ -115,7 +115,7 @@ For example, if you wanted to run `yarn run webpack` in `wwwroot/` instead:
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.5.1" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.6.0" />
   </ItemGroup>
 
 </Project>
