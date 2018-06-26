@@ -26,7 +26,7 @@ namespace Yarn.MSBuild.Tests.Utilities
         private Dictionary<string, string> _envVariables
             = new Dictionary<string, string>();
 
-#if NETCOREAPP2_0
+#if NETCOREAPP2_1
         private static readonly string s_baseDir = AppContext.BaseDirectory;
 #elif NET461
         private static readonly string s_baseDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -57,6 +57,7 @@ namespace Yarn.MSBuild.Tests.Utilities
 
             _envVariables["ARTIFACTS_PATH"] = artifacts;
             _envVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"] = bool.TrueString;
+            _envVariables["MSBUILDDISABLENODEREUSE"] = "1";
 
             var packageId = "Yarn.MSBuild";
             var packagesDir = Environment.GetEnvironmentVariable("NUGET_PACKAGES") ?? Path.Combine(home, ".nuget", "packages");

@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.DotNet.Cli.Utils;
@@ -37,7 +36,7 @@ namespace Yarn.MSBuild.Tests.Utilities
         {
             Command cmd;
             string commandName;
-#if NETCOREAPP2_0
+#if NETCOREAPP2_1
             commandName = "dotnet msbuild";
             cmd = Command.CreateDotNet("msbuild", args);
 #elif NET461

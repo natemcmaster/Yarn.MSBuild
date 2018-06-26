@@ -61,6 +61,6 @@ if (Get-Command git) {
     $commit = git rev-parse HEAD
 }
 
-__exec dotnet restore
-__exec dotnet build --no-restore --configuration $config "-p:RepositoryCommit=$commit"
-__exec dotnet test --no-build --no-restore --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
+__exec dotnet restore '-nodeReuse:false'
+__exec dotnet build --no-restore --configuration $config "-p:RepositoryCommit=$commit" '-nodeReuse:false'
+__exec dotnet test --no-build --no-restore --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj '-nodeReuse:false'

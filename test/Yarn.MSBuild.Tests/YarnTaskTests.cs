@@ -54,10 +54,10 @@ namespace Yarn.MSBuild.Tests
             proj.Root.Should().HaveFile("yarn.lock");
 
             proj.Root.GetFile("yarn.lock").Delete();
-            proj.Build("-p:TargetFramework=netcoreapp2.0").Should().Pass();
+            proj.Build("-p:TargetFramework=netcoreapp2.1").Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
 
-#if NETCOREAPP2_0
+#if NETCOREAPP2_1
             var secondTfm = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                 ? "net461"
                 : "netcoreapp1.1";
