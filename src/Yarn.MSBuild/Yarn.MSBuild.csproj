@@ -5,7 +5,6 @@
     <NuSpecFile>Yarn.MSBuild.nuspec</NuSpecFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard1.5</TargetFrameworks>
     <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 

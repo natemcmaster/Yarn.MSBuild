@@ -1,9 +1,16 @@
 #!/usr/bin/env pwsh
+[CmdletBinding(PositionalBinding = $false)]
+param(
+    [switch]
+    $ci,
+    [switch]
+    $sign
+)
 
 $ErrorActionPreference = 'Stop'
-Set-StrictMode -Version 2
+Set-StrictMode -Version 1
 
-function __exec($cmd) {
+function exec($cmd) {
     write-host -ForegroundColor Cyan "> $cmd $args"
     $ErrorActionPreference = 'Continue'
     & $cmd @args
@@ -19,6 +26,41 @@ $config = 'Release'
 $artifacts = "$PSScriptRoot/artifacts"
 if (Test-Path $artifacts) {
     rm -r $artifacts
+}
+
+[string[]] $MSBuildArgs = @('-nodeReuse:false')
+
+if ($ci) {
+    $MSBuildArgs += '-p:CI=true'
+}
+
+$CodeSign = $sign -or ($ci -and -not $env:APPVEYOR_PULL_REQUEST_HEAD_COMMIT -and ($IsWindows -or -not $IsCoreCLR))
+
+if ($CodeSign) {
+    $toolsDir = "$PSScriptRoot/.build/tools"
+    $AzureSignToolPath = "$toolsDir/azuresigntool"
+    if ($IsWindows) {
+        $AzureSignToolPath += ".exe"
+    }
+
+    if (-not (Test-Path $AzureSignToolPath)) {
+        exec dotnet tool install --tool-path $toolsDir `
+        AzureSignTool `
+        --version 2.0.17
+    }
+
+    $nstDir = "$toolsDir/nugetsigntool/1.1.4"
+    $NuGetKeyVaultSignToolPath = "$nstDir/tools/net471/NuGetKeyVaultSignTool.exe"
+    if (-not (Test-Path $NuGetKeyVaultSignToolPath)) {
+        New-Item $nstDir -ItemType Directory -ErrorAction Ignore | Out-Null
+        Invoke-WebRequest https://github.com/onovotny/NuGetKeyVaultSignTool/releases/download/v1.1.4/NuGetKeyVaultSignTool.1.1.4.nupkg `
+            -OutFile "$nstDir/NuGetKeyVaultSignTool.zip"
+        Expand-Archive "$nstDir/NuGetKeyVaultSignTool.zip" -DestinationPath $nstDir
+    }
+
+    $MSBuildArgs += '-p:CodeSign=true'
+    $MSBuildArgs += "-p:AzureSignToolPath=$AzureSignToolPath"
+    $MSBuildArgs += "-p:NuGetKeyVaultSignToolPath=$NuGetKeyVaultSignToolPath"
 }
 
 $yarn_version = Get-Content "$PSScriptRoot/yarn.version"
@@ -48,8 +90,8 @@ cp tools/7za.exe ./
 try {
     rm -recurse -force $dist_dir -ErrorAction Ignore
     mkdir $dist_dir
-    __exec ./7za.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
-    __exec ./7za.exe x -y -ttar "-o$dist_dir" "${env:TEMP}/yarn-v$yarn_version.tar"
+    exec ./7za.exe x -y -tgzip "-o${env:TEMP}" $yarn_archive
+    exec ./7za.exe x -y -ttar "-o$dist_dir" "${env:TEMP}/yarn-v$yarn_version.tar"
     gci "$dist_dir/yarn-v$yarn_version/*" | % { mv $_ $dist_dir }
 }
 finally {
@@ -61,6 +103,12 @@ if (Get-Command git) {
     $commit = git rev-parse HEAD
 }
 
-__exec dotnet restore '-nodeReuse:false'
-__exec dotnet build --no-restore --configuration $config "-p:RepositoryCommit=$commit" '-nodeReuse:false'
-__exec dotnet test --no-build --no-restore --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj '-nodeReuse:false'
+exec dotnet build `
+    --configuration $config `
+    "-p:RepositoryCommit=$commit" `
+    @MSBuildArgs
+
+exec dotnet test --no-build --no-restore `
+    --configuration $config `
+    test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj `
+    @MSBuildArgs

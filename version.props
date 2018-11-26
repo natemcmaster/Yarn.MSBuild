@@ -12,8 +12,5 @@
 
     <BranchName Condition=" '$(BranchName)' == '' ">$(APPVEYOR_REPO_BRANCH)</BranchName>
     <RepositoryCommit Condition=" '$(RepositoryCommit)' == '' ">$(APPVEYOR_REPO_COMMIT)</RepositoryCommit>
-
-    <VersionMetadata Condition="'$(RepositoryCommit)' != ''">sha.$(RepositoryCommit.Substring(0, 8))</VersionMetadata>
-    <VersionSuffix Condition=" '$(VersionSuffix)' != '' AND '$(VersionMetadata)' != '' ">$(VersionSuffix)+$(VersionMetadata)</VersionSuffix>
   </PropertyGroup>
 </Project>

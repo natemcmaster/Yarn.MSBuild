@@ -1,9 +1,11 @@
 environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
+  KEYVAULT_CLIENT_SECRET:
+    secure: Y89qXSB30HLwCrA53cB7Tic3a8GxsTxv8SdhyvU96ROKS8zX9Lf1FWnhEMIal2mo
 install:
   - ps: Install-Product node $env:nodejs_version
 build_script:
-  - ps: ./build.ps1
+  - ps: ./build.ps1 -ci
 test: off
 os: Visual Studio 2017
 branches:
