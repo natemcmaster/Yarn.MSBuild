@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "dependencies": {
+    "jest": "24.1.0",
+    "ts-jest": "22.4.6"
+  }
+}

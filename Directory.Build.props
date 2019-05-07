@@ -14,11 +14,12 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageIconUrl>https://cdn.rawgit.com/yarnpkg/assets/master/yarn-kitten-circle.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/natemcmaster/Yarn.MSBuild</PackageProjectUrl>
-    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/natemcmaster/Yarn.MSBuild</RepositoryUrl>
     <GenerateFullPaths Condition="'$(VSCODE_CWD)' != ''">true</GenerateFullPaths>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);NU5105;1701</NoWarn>
 
     <AzureKeyVaultUrl>https://nmcmaster.vault.azure.net</AzureKeyVaultUrl>
     <AzureKeyVaultClientId>6a27a2da-bb78-4baa-bd2b-150fe89ea039</AzureKeyVaultClientId>
@@ -27,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- For x-plat develpment. Workaround for https://github.com/dotnet/sdk/issues/335 -->
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-alpha-004" PrivateAssets="all" />
+    <!-- For x-plat development. Workaround for https://github.com/dotnet/sdk/issues/335 -->
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-preview.1" PrivateAssets="all" />
   </ItemGroup>
 </Project>

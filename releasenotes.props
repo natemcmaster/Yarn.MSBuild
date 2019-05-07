@@ -1,5 +1,9 @@
 ﻿<Project>
   <PropertyGroup>
+    <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.15.2'">
+- Change default logging level to 'High' so console output appears
+- Elevate yarn warnings to MSBuild warnings
+    </PackageReleaseNotes>
     <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.5.1'">
 - Add support for using this package as a 'SDK' package (requires Visual Studio 2017 15.6).
     </PackageReleaseNotes>

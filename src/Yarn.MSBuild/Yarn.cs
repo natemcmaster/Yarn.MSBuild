@@ -1,4 +1,4 @@
-// Copyright (c) Nate McMaster.
+﻿// Copyright (c) Nate McMaster.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
@@ -51,6 +51,13 @@ namespace Yarn.MSBuild
         /// Ignore the exit code of yarn.
         /// </summary>
         public bool IgnoreExitCode { get; set; }
+
+        /// <summary>
+        /// Whether to use pick out lines in the output that match
+        /// the standard error/warning format, and log them as errors/warnings.
+        /// Defaults to false.
+        /// </summary>
+        public bool IgnoreStandardErrorWarningFormat { get; set; }
 
         protected override string ToolName => YarnExeName;
 
@@ -187,6 +194,30 @@ namespace Yarn.MSBuild
                 yarn += ".cmd";
             }
             return yarn;
+        }
+
+        protected override void LogEventsFromTextOutput(string singleLine, MessageImportance messageImportance)
+        {
+            const string WarningPrefix = "warning ";
+            const string ErrorPrefix = "error ";
+            if (IgnoreStandardErrorWarningFormat)
+            {
+                // Not detecting regular format errors and warnings
+                Log.LogMessage(messageImportance, singleLine, null);
+                return;
+            }
+            else if (singleLine.StartsWith(WarningPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                Log.LogWarning(singleLine.Substring(WarningPrefix.Length));
+                return;
+            }
+            else if (singleLine.StartsWith(ErrorPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                Log.LogError(singleLine.Substring(ErrorPrefix.Length));
+                return;
+            }
+
+            base.LogEventsFromTextOutput(singleLine, messageImportance);
         }
 
         private static bool IsWindows()

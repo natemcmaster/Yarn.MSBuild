@@ -27,7 +27,7 @@ namespace Yarn.MSBuild.Tests.Utilities
             => RunCommand("-t:Restore");
 
         public CommandResult Build(params string[] args)
-            => RunCommand(new[] { "-t:Build" }.Concat(args).ToArray());
+            => RunCommand(new[] { "-t:Build", "-clp:Summary" }.Concat(args).ToArray());
 
         public CommandResult Msbuild(params string[] args)
             => RunCommand(args);

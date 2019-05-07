@@ -1,0 +1,11 @@
+<Project>
+
+  <Sdk Name="Microsoft.NET.Sdk" />
+  <Sdk Name="Yarn.MSBuild" />
+
+  <PropertyGroup>
+    <YarnBuildCommand>install</YarnBuildCommand>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>

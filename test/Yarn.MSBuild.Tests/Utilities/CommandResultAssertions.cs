@@ -17,6 +17,13 @@ namespace Yarn.MSBuild.Tests.Utilities
             _commandResult = commandResult;
         }
 
+        public AndConstraint<CommandResultAssertions> ContainStdOut(string expectedSubstring)
+        {
+            Execute.Assertion.ForCondition(_commandResult.StdOut.Contains(expectedSubstring))
+                .FailWith(AppendDiagnosticsTo($"Expected stdout to contain '{expectedSubstring}' but it did not."));
+            return new AndConstraint<CommandResultAssertions>(this);
+        }
+
         public AndConstraint<CommandResultAssertions> ExitWith(int expectedExitCode)
         {
             Execute.Assertion.ForCondition(_commandResult.ExitCode == expectedExitCode)

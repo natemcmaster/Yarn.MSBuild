@@ -30,7 +30,7 @@ dotnet add package Yarn.MSBuild
 **In csproj**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Yarn.MSBuild" Version="1.12.3" />
+  <PackageReference Include="Yarn.MSBuild" Version="1.15.2" />
 </ItemGroup>
 ```
 
@@ -41,7 +41,7 @@ See [Microsoft's documentation](https://docs.microsoft.com/en-us/visualstudio/ms
 ```xml
 <Project>
   <Sdk Name="Microsoft.NET.Sdk.Web" />
-  <Sdk Name="Yarn.MSBuild" Version="1.12.3" />
+  <Sdk Name="Yarn.MSBuild" Version="1.15.2" />
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -70,7 +70,7 @@ Example:
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.12.3" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.15.2" />
   </ItemGroup>
 
 </Project>
@@ -115,7 +115,7 @@ For example, if you wanted to run `yarn run webpack` in `wwwroot/` instead:
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.12.3" />
+    <PackageReference Include="Yarn.MSBuild" Version="1.15.2" />
   </ItemGroup>
 
 </Project>
@@ -157,26 +157,29 @@ The `Yarn` task supports the following parameters
 
 ```
 [Optional]
-string Command                The arguments to pass to yarn.
+string Command                            The arguments to pass to yarn.
 
 [Optional]
-string ExecutablePath         Where to find yarn (*nix) or yarn.cmd (Windows)
+string ExecutablePath                     Where to find yarn (*nix) or yarn.cmd (Windows)
 
 [Optional]
-string NodeJsExecutablePath   Where to find node(js) (*nix) or node.cmd (Windows).
-                              If not provided, node is expected to be in the PATH environment variable.
+string NodeJsExecutablePath               Where to find node(js) (*nix) or node.cmd (Windows).
+                                          If not provided, node is expected to be in the PATH environment variable.
 
 [Optional]
-string WorkingDirectory       The directory in which to execute the yarn command
+string WorkingDirectory                   The directory in which to execute the yarn command
 
 [Optional]
-bool IgnoreExitCode           Don't create and error if the exit code is non-zero
+bool IgnoreExitCode                       Don't create and error if the exit code is non-zero
+
+[Optional]
+bool IgnoreStandardErrorWarningFormat     Don't create MSBuild errors or warnings when Yarn output logs lines starting with 'warning' and 'error'
 ```
 
 Task outputs:
 ```
 [Output]
-int ExitCode                  Returns the exit code of the yarn process
+int ExitCode                              Returns the exit code of the yarn process
 ```
 
 # About
