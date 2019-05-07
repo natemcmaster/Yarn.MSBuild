@@ -1,4 +1,4 @@
-﻿// Copyright (c) Nate McMaster.
+// Copyright (c) Nate McMaster.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
@@ -56,10 +56,10 @@ namespace Yarn.MSBuild
 
         protected override string GenerateCommandLineCommands() => Command;
 
-        // increase the default output importance from Low to Normal
-        protected override MessageImportance StandardOutputLoggingImportance { get; } = MessageImportance.Normal;
+        // increase the default output importance from Low to High so output appears in console output when used with the dotnet CLI.
+        protected override MessageImportance StandardOutputLoggingImportance { get; } = MessageImportance.High;
 
-        protected override MessageImportance StandardErrorLoggingImportance { get; } = MessageImportance.Normal;
+        protected override MessageImportance StandardErrorLoggingImportance { get; } = MessageImportance.High;
 
 #if NET46
         public override bool Execute()
