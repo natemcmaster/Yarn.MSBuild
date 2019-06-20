@@ -51,7 +51,7 @@ namespace Yarn.MSBuild.Tests
             proj.Build()
                 .Should().Pass()
                 .And
-                .ContainStdOut("0 Warning(s)")
+                .ContainStdOut("0 Warning(s)");
             proj.Done();
         }
 
