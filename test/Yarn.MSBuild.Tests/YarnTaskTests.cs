@@ -49,9 +49,7 @@ namespace Yarn.MSBuild.Tests
             var proj = _projManager.Create("ProjWithWarnings", _output);
             proj.Restore().Should().Pass();
             proj.Build()
-                .Should().Pass()
-                .And
-                .ContainStdOut("0 Warning(s)");
+                .Should().Pass();
             proj.Done();
         }
 
