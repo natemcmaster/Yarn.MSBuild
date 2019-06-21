@@ -23,10 +23,9 @@ jobs:
     inputs:
       versionSpec: 10.x
   - powershell: >
-      $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -format json
-      $vsInfo = $vs | ConvertFrom-Json
-      echo "Found VS in $($vsInfo.installationPath)"
-      echo "##vso[task.prependpath]$($vsInfo.installationPath)\MSBuild\Current\Bin"
+      $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -format json | ConvertFrom-Json | select -first 1
+      echo "Found VS in $($vs.installationPath)"
+      echo "##vso[task.prependpath]$($vs.installationPath)\MSBuild\Current\Bin"
     displayName: Find VS and put on PATH
   - powershell: ./build.ps1 -ci
     displayName: Invoke build.ps1
