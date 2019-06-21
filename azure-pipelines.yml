@@ -22,6 +22,12 @@ jobs:
     displayName: Install NodeJS 10.x
     inputs:
       versionSpec: 10.x
+  - powershell: >
+      $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -format json
+      $vsInfo = $vs | ConvertFrom-Json
+      echo "Found VS in $($vsInfo.installationPath)"
+      echo "##vso[task.prependpath]$($vsInfo.installationPath)\MSBuild\Current\Bin"
+    displayName: Find VS and put on PATH
   - powershell: ./build.ps1 -ci
     displayName: Invoke build.ps1
     condition: eq(variables['kv-access-token'], '')
