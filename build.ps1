@@ -110,6 +110,22 @@ if (Get-Command git) {
     $commit = git rev-parse HEAD
 }
 
+if (-not (Get-Command msbuild -ErrorAction Ignore)) {
+    $vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+    if (-not (Test-Path $vsWherePath)) {
+        Write-Warning "Could not find Visual Studio and MSBuild.exe"
+    }
+    else {
+        $vs = & $vsWherePath -latest -products * -format json | ConvertFrom-Json | select -first 1
+        echo "Found VS in $($vs.installationPath)"
+        if ($ci) {
+            echo "##vso[task.prependpath]$($vs.installationPath)\MSBuild\Current\Bin"
+        }
+
+        $env:PATH = "$env:PATH;$($vs.installationPath)\MSBuild\Current\Bin"
+    }
+}
+
 exec dotnet msbuild /t:UpdateCiSettings @MSBuildArgs
 
 exec dotnet build `

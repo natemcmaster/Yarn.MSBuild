@@ -1,7 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
-MinimumVisualStudioVersion = 15.0.26228.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.0.0
+MinimumVisualStudioVersion = 16.0.0.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{197F3D43-5077-473A-ADF8-EEB8BF10AD65}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yarn.MSBuild", "src\Yarn.MSBuild\Yarn.MSBuild.csproj", "{F5E8B269-BACD-4026-9E07-C7A69321C8F2}"
