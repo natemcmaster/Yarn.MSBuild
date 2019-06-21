@@ -49,7 +49,11 @@ namespace Yarn.MSBuild.Tests
             var proj = _projManager.Create("ProjWithWarnings", _output);
             proj.Restore().Should().Pass();
             proj.Build()
-                .Should().Pass();
+                .Should().Pass()
+                .And
+                .ContainStdOut("6 Warning(s)")
+                .And
+                .ContainStdOut("warning : \" > ts-jest@22.4.6\" has incorrect peer dependency");
             proj.Done();
         }
 
