@@ -36,7 +36,12 @@ if ($ci) {
     $MSBuildArgs += '-p:CI=true'
 }
 
-$CodeSign = $sign -or ($ci -and ($env:BUILD_REASON -ne 'PullRequest') -and ($IsWindows -or -not $IsCoreCLR))
+$isPr = $env:APPVEYOR_PULL_REQUEST_HEAD_COMMIT -or ($env:BUILD_REASON -eq 'PullRequest')
+if (-not (Test-Path variable:\IsCoreCLR)) {
+    $IsWindows = $true
+}
+
+$CodeSign = $sign -or ($ci -and -not $isPr -and $IsWindows)
 
 if ($CodeSign) {
     $toolsDir = "$PSScriptRoot/.build/tools"
@@ -104,6 +109,8 @@ $commit = ''
 if (Get-Command git) {
     $commit = git rev-parse HEAD
 }
+
+exec dotnet msbuild /t:UpdateCiSettings @MSBuildArgs
 
 exec dotnet build `
     --configuration $config `
