@@ -42,7 +42,7 @@ if (-not (Test-Path variable:\IsCoreCLR)) {
 }
 
 $CodeSign = $sign -or ($ci -and -not $isPr -and $IsWindows)
-
+Write-Host "CodeSign = $CodeSign"
 if ($CodeSign) {
     $toolsDir = "$PSScriptRoot/.build/tools"
     $AzureSignToolPath = "$toolsDir/azuresigntool"
@@ -117,7 +117,13 @@ exec dotnet build `
     "-p:RepositoryCommit=$commit" `
     @MSBuildArgs @AdditionalArgs
 
+[string[]] $TestArgs = @()
+
+if ($ci) {
+    $TestArgs += '--logger:trx'
+}
+
 exec dotnet test --no-build --no-restore `
     --configuration $config `
     test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj `
-    @MSBuildArgs @AdditionalArgs
+    @MSBuildArgs @AdditionalArgs @TestArgs

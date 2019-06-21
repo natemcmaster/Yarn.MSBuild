@@ -42,4 +42,9 @@ mv $dist_dir/yarn-v$yarn_version/* "$dist_dir/"
 echo "dotnet = $(dotnet --version)"
 __exec dotnet restore
 __exec dotnet build --no-restore --configuration $config
-__exec dotnet test --no-restore --no-build --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
+
+testargs=''
+if [ ! -z "${TF_BUILD:-}" ]; then
+    testargs='-logger:trx'
+fi
+__exec dotnet test --no-restore --no-build --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj $testargs

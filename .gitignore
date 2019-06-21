@@ -5,6 +5,7 @@ Thumbs.db
 obj/
 bin/
 dist/
+TestResults/
 artifacts/
 tools/
 node_modules/
