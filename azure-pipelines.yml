@@ -1,0 +1,62 @@
+trigger:
+- master
+
+pr:
+- '*'
+
+variables:
+- name: kv-access-token
+  value: ''
+- group: AzureKeyVault
+- name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+  value: 1
+- name: BUILD_NUMBER
+  value: $[counter('buildnumber', 200)]
+
+jobs:
+- job: Windows
+  pool:
+    vmImage: windows-2019
+  steps:
+  - task: NodeTool@0
+    displayName: Install NodeJS 10.x
+    inputs:
+      versionSpec: 10.x
+  - powershell: ./build.ps1 -ci
+    displayName: Invoke build.ps1
+    condition: eq(variables['kv-access-token'], '')
+  - powershell: ./build.ps1 -ci /p:AzureKeyVaultClientSecret=$(kv-access-token)
+    displayName: Invoke build.ps1
+    condition: ne(variables['kv-access-token'], '')
+  - task: PublishTestResults@2
+    displayName: Upload test results
+    condition: always()
+    continueOnError: true
+    inputs:
+      testRunTitle: Windows
+      testRunner: vstest
+      testResultsFiles: '**/*.trx'
+  - task: PublishBuildArtifacts@1
+    displayName: Publish artifacts
+    inputs:
+      pathtoPublish: 'artifacts/'
+      artifactName: 'Packages'
+- job: Linux
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+  - task: UseDotNet@2
+    displayName: Install .NET Core 2.2
+    inputs:
+      version: '2.2.x'
+      packageType: sdk
+  - script: ./build.sh
+    displayName: Invoke build.ps1
+  - task: PublishTestResults@2
+    displayName: Upload test results
+    condition: always()
+    continueOnError: true
+    inputs:
+      testRunTitle: Linux
+      testRunner: vstest
+      testResultsFiles: '**/*.trx'

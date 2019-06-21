@@ -1,5 +1,5 @@
 ﻿<Project>
-  <Target Name="SetPackageProperties" BeforeTargets="GenerateNuspec">
+  <Target Name="SetPackageProperties" BeforeTargets="GenerateNuspec" DependsOnTargets="InitializeSourceControlInformation">
     <!-- Create a dummy file when building on linux so the pack task passes. -->
     <MakeDir Directories="$(BaseOutputPath)\$(Configuration)\net46\" />
     <Touch Files="$(BaseOutputPath)\$(Configuration)\net46\Yarn.MSBuild.dll" AlwaysCreate="true" />
@@ -13,12 +13,8 @@
       </NuspecProperties>
       <NuspecProperties Condition="'$(RepositoryCommit)' != ''">
         $(NuspecProperties);
-        repositoryCommit=$(RepositoryCommit);
+        repositoryCommit=$(SourceRevisionId);
       </NuspecProperties>
     </PropertyGroup>
-  </Target>
-
-  <Target Name="UpdateBuildDetails" BeforeTargets="PrepareForBuild" Condition="'$(APPVEYOR)' == 'true'">
-    <Exec Command="appveyor UpdateBuild -Version $(PackageVersion)" IgnoreExitCode="true" IgnoreStandardErrorWarningFormat="true" />
   </Target>
 </Project>

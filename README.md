@@ -1,13 +1,9 @@
 Yarn.MSBuild
 ============
 
-[![Travis][travis-badge]](https://travis-ci.org/natemcmaster/Yarn.MSBuild)
-[![AppVeyor][appveyor-badge]](https://ci.appveyor.com/project/natemcmaster/yarn-msbuild)
 [![NuGet][nuget-badge]](https://nuget.org/packages/Yarn.MSBuild)
 [![MyGet][myget-badge]](https://www.myget.org/feed/natemcmaster/package/nuget/Yarn.MSBuild)
 
-[travis-badge]: https://img.shields.io/travis/natemcmaster/Yarn.MSBuild.svg?style=flat-square&label=travis
-[appveyor-badge]: https://img.shields.io/appveyor/ci/natemcmaster/yarn-msbuild.svg?style=flat-square&label=appveyor
 [nuget-badge]: https://img.shields.io/nuget/v/Yarn.MSBuild.svg?style=flat-square&label=nuget
 [myget-badge]: https://img.shields.io/www.myget/natemcmaster/vpre/Yarn.MSBuild.svg?style=flat-square&label=myget
 

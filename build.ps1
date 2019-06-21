@@ -34,7 +34,7 @@ if ($ci) {
     $MSBuildArgs += '-p:CI=true'
 }
 
-$CodeSign = $sign -or ($ci -and -not $env:APPVEYOR_PULL_REQUEST_HEAD_COMMIT -and ($IsWindows -or -not $IsCoreCLR))
+$CodeSign = $sign -or ($ci -and ($env:BUILD_REASON -ne 'PullRequest') -and ($IsWindows -or -not $IsCoreCLR))
 
 if ($CodeSign) {
     $toolsDir = "$PSScriptRoot/.build/tools"

@@ -3,14 +3,11 @@
     <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
     <VersionPrefix>$(YarnVersion)</VersionPrefix>
     <VersionSuffix>build</VersionSuffix>
-    <PackageVersion Condition="'$(APPVEYOR_REPO_TAG)' == 'true'">$(VersionPrefix)</PackageVersion>
+    <PackageVersion Condition="'$(IsStable)' == 'true'">$(VersionPrefix)</PackageVersion>
 
-    <BuildNumber Condition=" '$(BuildNumber)' == '' ">$(APPVEYOR_BUILD_NUMBER)</BuildNumber>
+    <BuildNumber Condition=" '$(BuildNumber)' == '' ">$(BUILD_NUMBER)</BuildNumber>
     <BuildNumber Condition=" '$(BuildNumber)' == '' ">0</BuildNumber>
     <FileVersion>$(VersionPrefix).$(BuildNumber)</FileVersion>
     <VersionSuffix Condition=" '$(VersionSuffix)' != '' ">$(VersionSuffix).$(BuildNumber)</VersionSuffix>
-
-    <BranchName Condition=" '$(BranchName)' == '' ">$(APPVEYOR_REPO_BRANCH)</BranchName>
-    <RepositoryCommit Condition=" '$(RepositoryCommit)' == '' ">$(APPVEYOR_REPO_COMMIT)</RepositoryCommit>
   </PropertyGroup>
 </Project>
