@@ -39,7 +39,7 @@ rm -r "$dist_dir" 2>/dev/null && :
 mkdir -p "$dist_dir"
 __exec tar -zx -C "$dist_dir" -f "$yarn_archive"
 mv $dist_dir/yarn-v$yarn_version/* "$dist_dir/"
-
+echo "dotnet = $(dotnet --version)"
 __exec dotnet restore
 __exec dotnet build --no-restore --configuration $config
 __exec dotnet test --no-restore --no-build --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj
