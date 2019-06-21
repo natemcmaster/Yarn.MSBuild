@@ -4,7 +4,9 @@ param(
     [switch]
     $ci,
     [switch]
-    $sign
+    $sign,
+    [Parameter(ValueFromRemainingArguments = $true)]
+    $AdditionalArgs
 )
 
 $ErrorActionPreference = 'Stop'
@@ -106,9 +108,9 @@ if (Get-Command git) {
 exec dotnet build `
     --configuration $config `
     "-p:RepositoryCommit=$commit" `
-    @MSBuildArgs
+    @MSBuildArgs @AdditionalArgs
 
 exec dotnet test --no-build --no-restore `
     --configuration $config `
     test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj `
-    @MSBuildArgs
+    @MSBuildArgs @AdditionalArgs
