@@ -3,7 +3,7 @@
     <YarnVersion Condition="'$(YarnVersion)' == ''">99.99.99</YarnVersion>
     <VersionPrefix>$(YarnVersion)</VersionPrefix>
     <VersionSuffix>build</VersionSuffix>
-    <PackageVersion Condition="'$(IsStable)' == 'true'">$(VersionPrefix)</PackageVersion>
+    <PackageVersion Condition="'$(IsStableBuild)' == 'true'">$(VersionPrefix)</PackageVersion>
 
     <BuildNumber Condition=" '$(BuildNumber)' == '' ">$(BUILD_NUMBER)</BuildNumber>
     <BuildNumber Condition=" '$(BuildNumber)' == '' ">0</BuildNumber>
