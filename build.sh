@@ -45,6 +45,6 @@ __exec dotnet build --no-restore --configuration $config
 
 testargs=''
 if [ ! -z "${TF_BUILD:-}" ]; then
-    testargs='-logger:trx'
+    testargs='--logger:trx'
 fi
 __exec dotnet test --no-restore --no-build --configuration $config test/Yarn.MSBuild.Tests/Yarn.MSBuild.Tests.csproj $testargs
