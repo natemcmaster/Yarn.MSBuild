@@ -1,5 +1,10 @@
 ﻿<Project>
   <PropertyGroup>
+    <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.21.1'">
+Recommended security update due to two vulnerabilities in the bundled version of Yarn.
+See https://yarnpkg.com/blog/2019/07/12/recommended-security-update/ and https://blog.npmjs.org/post/189618601100/binary-planting-with-the-npm-cli
+for more details.
+    </PackageReleaseNotes>
     <PackageReleaseNotes Condition="'$(VersionPrefix)' == '1.15.2'">
 - Change default logging level to 'High' so console output appears
 - Elevate yarn warnings to MSBuild warnings
