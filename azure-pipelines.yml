@@ -18,11 +18,11 @@ jobs:
   strategy:
     matrix:
       Linux:
-        vmImage: ubuntu-16.04
+        vmImage: ubuntu-latest
       MacOS:
         vmImage: macOS-latest
       Windows:
-        vmImage: windows-2019
+        vmImage: windows-latest
   pool:
     vmImage: $(vmImage)
   steps:
@@ -55,3 +55,4 @@ jobs:
   - publish: artifacts/
     artifact: Packages
     displayName: Publish artifacts
+    condition: and(succeeded(), eq('windows-latest', variables['vmImage']))
