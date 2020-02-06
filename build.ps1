@@ -60,8 +60,9 @@ $artifacts = "$PSScriptRoot/artifacts/"
 Remove-Item -Recurse $artifacts -ErrorAction Ignore
 
 
-$yarn_version = Get-Content "$PSScriptRoot/yarn.version"
-$env:YarnVersion = $yarn_version
+$pkg_json = Get-Content -Raw "$PSScriptRoot/src/Yarn.MSBuild/package.json" | ConvertFrom-Json
+$yarn_version = $pkg_json.dependencies.yarn
+$MSBuildArgs += "-p:YarnVersion=$yarn_version"
 
 exec dotnet tool restore
 

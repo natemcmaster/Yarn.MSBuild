@@ -25,7 +25,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{33C50A57
 		NuGet.config = NuGet.config
 		README.md = README.md
 		version.props = version.props
-		yarn.version = yarn.version
 	EndProjectSection
 EndProject
 Global
