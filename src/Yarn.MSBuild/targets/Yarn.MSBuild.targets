@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <Target Name="YarnBuild" Condition="'$(YarnBuildCommand)' != ''">
+    <!-- Older versions of the NuGet client don't extract yarn with the +x bit -->
+    <Exec Command="chmod +x &quot;$(NodeJsExecutablePath)&quot;; sync"
+          IgnoreExitCode="true"
+          Condition="'$(NodeJsExecutablePath)' != '' AND '$(OS)' != 'Windows_NT'" />
+
     <Yarn Command="$(YarnBuildCommand)"
           WorkingDirectory="$(YarnWorkingDir)"
           ExecutablePath="$(YarnExecutablePath)"
