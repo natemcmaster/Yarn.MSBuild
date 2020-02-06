@@ -3,6 +3,7 @@
 
   <PropertyGroup>
     <NuSpecFile>Yarn.MSBuild.nuspec</NuSpecFile>
+    <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
     <NoPackageAnalysis>true</NoPackageAnalysis>

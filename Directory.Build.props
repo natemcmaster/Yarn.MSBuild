@@ -1,8 +1,4 @@
 <Project>
-  <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-  </PropertyGroup>
-
   <Import Project="version.props" />
 
   <PropertyGroup>
@@ -23,6 +19,7 @@
     <GenerateFullPaths Condition="'$(TERM_PROGRAM)' == 'vscode'">true</GenerateFullPaths>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU5105;1701</NoWarn>
+    <IsPackable>false</IsPackable>
 
     <AzureKeyVaultUrl>https://nmcmaster.vault.azure.net</AzureKeyVaultUrl>
     <AzureKeyVaultClientId>6a27a2da-bb78-4baa-bd2b-150fe89ea039</AzureKeyVaultClientId>
@@ -31,8 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19270-01" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
     <!-- For x-plat development. Workaround for https://github.com/dotnet/sdk/issues/335 -->
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-preview.2" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>

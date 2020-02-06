@@ -1,10 +1,9 @@
-<Project>
+<Project InitialTargets="UpdateCiSettings">
 
-  <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-  </PropertyGroup>
+  <Target Name="UpdateCiSettings" Condition="'$(CI)' == 'true' AND '$(IsPackable)' == 'true'">
+    <Message Importance="High" Text="##vso[build.updatebuildnumber]$(PackageVersion)" />
+  </Target>
 
-  <Import Project="..\Directory.Build.targets" />
   <Import Project="CodeSign.targets" />
 
 </Project>

@@ -1,7 +1,6 @@
 // Copyright (c) Nate McMaster.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Runtime.InteropServices;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
@@ -25,7 +24,6 @@ namespace Yarn.MSBuild.Tests
         public void RunsYarnInstalledAsAnSdkPackage()
         {
             var proj = _projManager.Create("SdkProj", _output);
-            proj.Restore().Should().Pass();
             proj.Root.Should().NotHaveFile("yarn.lock");
             proj.Build().Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
@@ -36,7 +34,6 @@ namespace Yarn.MSBuild.Tests
         public void RunsYarnBuildCommand()
         {
             var proj = _projManager.Create("WebSdkProj", _output);
-            proj.Restore().Should().Pass();
             proj.Root.Should().NotHaveFile("yarn.lock");
             proj.Build().Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
@@ -47,7 +44,6 @@ namespace Yarn.MSBuild.Tests
         public void LoggingDetectsWarning()
         {
             var proj = _projManager.Create("ProjWithWarnings", _output);
-            proj.Restore().Should().Pass();
             proj.Build()
                 .Should().Pass()
                 .And
@@ -61,7 +57,6 @@ namespace Yarn.MSBuild.Tests
         public void ShouldRunOnMultiTfmProjects()
         {
             var proj = _projManager.Create("MultiTfmWebApp", _output);
-            proj.Restore().Should().Pass();
 
             proj.Root.Should().NotHaveFile("yarn.lock");
             proj.Build().Should().Pass();
@@ -71,18 +66,8 @@ namespace Yarn.MSBuild.Tests
             proj.Build("-p:TargetFramework=netcoreapp2.1").Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
 
-#if NETCOREAPP2_1
-            var secondTfm = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                ? "net461"
-                : "netcoreapp1.1";
-#elif NET461
-            var secondTfm = "net461";
-#else
-#error Target frameworks need updating
-#endif
-
             proj.Root.GetFile("yarn.lock").Delete();
-            proj.Build($"-p:TargetFramework={secondTfm}").Should().Pass();
+            proj.Build($"-p:TargetFramework=netcoreapp3.1").Should().Pass();
             proj.Root.Should().HaveFile("yarn.lock");
 
             proj.Done();
@@ -92,9 +77,8 @@ namespace Yarn.MSBuild.Tests
         public void RunsOtherYarnCommands()
         {
             var proj = _projManager.Create("YarnCommands", _output);
-            proj.Restore().Should().Pass();
             proj.Root.Should().NotHaveFile("testran.txt");
-            proj.Msbuild("-t:RunYarnTest").Should().Pass();
+            proj.Msbuild("-restore", "-t:RunYarnTest").Should().Pass();
             proj.Root.Should().HaveFile("testran.txt");
             proj.Msbuild("-t:RunYarnTest1").Should().Pass();
             proj.Root.Should().HaveFile("testran2.txt");
