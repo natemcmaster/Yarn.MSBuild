@@ -23,11 +23,8 @@ namespace Yarn.MSBuild.Tests.Utilities
             _output = output;
         }
 
-        public CommandResult Restore()
-            => RunCommand("-t:Restore");
-
         public CommandResult Build(params string[] args)
-            => RunCommand(new[] { "-t:Build", "-clp:Summary" }.Concat(args).ToArray());
+            => RunCommand(new[] { "-restore", "-t:Build", "-clp:Summary" }.Concat(args).ToArray());
 
         public CommandResult Msbuild(params string[] args)
             => RunCommand(args);
@@ -36,10 +33,10 @@ namespace Yarn.MSBuild.Tests.Utilities
         {
             Command cmd;
             string commandName;
-#if NETCOREAPP2_1
+#if NETCOREAPP3_1
             commandName = "dotnet msbuild";
             cmd = Command.CreateDotNet("msbuild", args);
-#elif NET461
+#elif NET472
             commandName = GetVisualStudioMsbuild();
             cmd = Command.Create(commandName, args);
 #else

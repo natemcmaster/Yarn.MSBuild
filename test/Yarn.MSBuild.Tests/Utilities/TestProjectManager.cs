@@ -26,18 +26,10 @@ namespace Yarn.MSBuild.Tests.Utilities
         private Dictionary<string, string> _envVariables
             = new Dictionary<string, string>();
 
-#if NETCOREAPP2_1
-        private static readonly string s_baseDir = AppContext.BaseDirectory;
-#elif NET461
-        private static readonly string s_baseDir = AppDomain.CurrentDomain.BaseDirectory;
-#else
-#error Target frameworks need to be updated
-#endif
-
         public TestProjectManager()
         {
-            var tfm = Path.GetFileName(s_baseDir);
-            var project = new DirectoryInfo(s_baseDir) // tfm
+            var tfm = Path.GetFileName(AppContext.BaseDirectory);
+            var project = new DirectoryInfo(AppContext.BaseDirectory) // tfm
                 .Parent // Debug
                 .Parent // bin
                 .Parent; // proj dir

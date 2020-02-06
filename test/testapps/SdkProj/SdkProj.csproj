@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <YarnBuildCommand>install</YarnBuildCommand>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
