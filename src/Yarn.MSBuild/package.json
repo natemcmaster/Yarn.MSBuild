@@ -1,6 +1,6 @@
 {
   "private": true,
   "dependencies": {
-    "yarn": "1.22.0"
+    "yarn": "1.22.1"
   }
 }
