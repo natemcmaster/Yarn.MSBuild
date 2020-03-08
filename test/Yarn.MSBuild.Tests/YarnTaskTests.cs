@@ -47,8 +47,6 @@ namespace Yarn.MSBuild.Tests
             proj.Build()
                 .Should().Pass()
                 .And
-                .ContainStdOut("5 Warning(s)")
-                .And
                 .ContainStdOut("warning : \" > ts-jest@22.4.6\" has incorrect peer dependency");
             proj.Done();
         }
