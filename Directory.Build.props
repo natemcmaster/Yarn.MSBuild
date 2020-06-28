@@ -20,11 +20,6 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU5105;1701</NoWarn>
     <IsPackable>false</IsPackable>
-
-    <AzureKeyVaultUrl>https://nmcmaster.vault.azure.net</AzureKeyVaultUrl>
-    <AzureKeyVaultClientId>6a27a2da-bb78-4baa-bd2b-150fe89ea039</AzureKeyVaultClientId>
-    <AzureKeyVaultClientSecret>$(KEYVAULT_CLIENT_SECRET)</AzureKeyVaultClientSecret>
-    <CodeSignCertName>DigiCertCodeSign</CodeSignCertName>
   </PropertyGroup>
 
   <ItemGroup>

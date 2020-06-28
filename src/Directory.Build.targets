@@ -4,6 +4,4 @@
     <Message Importance="High" Text="##vso[build.updatebuildnumber]$(PackageVersion)" />
   </Target>
 
-  <Import Project="CodeSign.targets" />
-
 </Project>

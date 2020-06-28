@@ -5,8 +5,6 @@ param(
     $Configuration = $null,
     [switch]
     $ci,
-    [switch]
-    $sign,
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$MSBuildArgs
 )
@@ -31,7 +29,6 @@ function exec([string]$_cmd) {
 
 $MSBuildArgs += '-nodeReuse:false'
 
-$isPr = $env:BUILD_REASON -eq 'PullRequest'
 if (-not (Test-Path variable:\IsCoreCLR)) {
     $IsWindows = $true
 }
@@ -49,12 +46,6 @@ if ($ci) {
     $MSBuildArgs += '-p:CI=true'
 }
 
-$CodeSign = $sign -or ($ci -and -not $isPr -and $IsWindows)
-
-if ($CodeSign) {
-    $MSBuildArgs += '-p:CodeSign=true'
-}
-
 $artifacts = "$PSScriptRoot/artifacts/"
 
 Remove-Item -Recurse $artifacts -ErrorAction Ignore
@@ -63,8 +54,6 @@ Remove-Item -Recurse $artifacts -ErrorAction Ignore
 $pkg_json = Get-Content -Raw "$PSScriptRoot/src/Yarn.MSBuild/package.json" | ConvertFrom-Json
 $yarn_version = $pkg_json.dependencies.yarn
 $MSBuildArgs += "-p:YarnVersion=$yarn_version"
-
-exec dotnet tool restore
 
 $proj_dir = "$PSScriptRoot/src/Yarn.MSBuild"
 $dist_dir = "$proj_dir/dist"
