@@ -1,7 +1,9 @@
-version: 1
-
-update_configs:
-  - package_manager: javascript
-    directory: /src/Yarn.MSBuild
-    update_schedule: weekly
-    version_requirement_updates: increase_versions
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: /src/Yarn.MSBuild
+  schedule:
+    interval: weekly
+  versioning-strategy: increase
+  labels:
+    - dependencies
