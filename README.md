@@ -1,8 +1,12 @@
 Yarn.MSBuild
 ============
 
-[![NuGet](https://img.shields.io/nuget/v/Yarn.MSBuild.svg?style=flat-square&label=nuget)](https://nuget.org/packages/Yarn.MSBuild)
-[![Build Status](https://dev.azure.com/natemcmaster/github/_apis/build/status/Yarn.MSBuild?branchName=master)](https://dev.azure.com/natemcmaster/github/_build/latest?definitionId=9&branchName=master)
+# Status
+
+This project is now archived. It supported Yarn v1, but will not be updated to support Yarn v2 and beyond. See https://yarnpkg.com for recommended instructions
+on installing and using Yarn.
+
+# About this project
 
 An MSBuild task for running the Yarn package manager.
 
